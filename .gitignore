@@ -32,6 +32,7 @@
 *.app
 
 # ファイル削除
-*.vs
+DxLibGame/.vs
 *Debug
 *x64
+*Log.txt
