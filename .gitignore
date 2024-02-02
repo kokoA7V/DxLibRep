@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# ファイル削除
+*.vs
+*Debug
+*x64
