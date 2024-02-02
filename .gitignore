@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# DxLibの変更を止める
+DxLibGame.vcxproj
