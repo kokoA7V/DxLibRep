@@ -1,2 +1,2 @@
 ﻿  test.cpp
-C:\Users\user\Desktop\GameDevelop\DxLibDevelop\Repository\DxLibGame\test.cpp(1,10): fatal error C1083: include ファイルを開けません。'DxLib.h':No such file or directory
+  DxLibGame.vcxproj -> C:\Users\user\Desktop\GameDevelop\DxLibDevelop\Repository\DxLibGame\x64\Debug\DxLibGame.exe
