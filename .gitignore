@@ -31,5 +31,8 @@
 *.out
 *.app
 
-# DxLibの変更を止める
-DxLibGame.vcxproj
+# ファイル削除
+DxLibGame/.vs
+*Debug
+*x64
+*Log.txt
