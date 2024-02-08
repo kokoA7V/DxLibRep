@@ -157,7 +157,6 @@
   <ItemGroup>
     <ClInclude Include="KeyMng.h" />
     <ClInclude Include="koko.h" />
-    <ClInclude Include="test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
