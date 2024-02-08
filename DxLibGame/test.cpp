@@ -1,28 +1,13 @@
 #include <DxLib.h>
 #include <stdio.h>
+#include "KeyMng.h"
+#include "koko.h"
 
 //
 //ここで変数を用意
 //
 
-//キー取得用の配列
-char buf[256] = { 0 };
-int keyState[256] = { 0 };
 
-//キー入力状態を更新する関数
-void KeyUpdate()
-{
-    GetHitKeyStateAll(buf);
-    for (int i = 0; i < 256; i++)
-    {
-        if (buf[i] == 1) {
-            keyState[i]++;
-        }
-        else {
-            keyState[i] = 0;
-        }
-    }
-}
 
 // スプライトハンドル
 int spriteHandle;
@@ -139,6 +124,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     //ここで画像・音を読み込み
     {
+        gKoko.Init();
+
         spriteHandle = LoadGraph("Sprite/test.PNG");
         spriteHandle2 = LoadGraph("Sprite/test2.PNG");
 
@@ -152,22 +139,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         //ここに毎フレーム呼ぶ処理を書く
         {
-            KeyUpdate();//キー入力状態を更新する
+            gKeyMng.KeyUpdate();//キー入力状態を更新する
 
-            DrawFormatString(200, 100, GetColor(255, 255, 255), "Z KEY %d", keyState[KEY_INPUT_Z]);
-            DrawFormatString(200, 120, GetColor(255, 255, 255), "X KEY %d", keyState[KEY_INPUT_X]);
+            DrawFormatString(200, 100, GetColor(255, 255, 255), "Z KEY %d", gKeyMng.keyState[KEY_INPUT_Z]);
+            DrawFormatString(200, 120, GetColor(255, 255, 255), "X KEY %d", gKeyMng.keyState[KEY_INPUT_X]);
 
             DrawGraph(0, 0, spriteHandle, 0);//描画
             DrawGraph(0, 64, spriteHandle2, 0);//描画
 
             // 音楽再生
-            if (keyState[KEY_INPUT_Z] == 1)
+            if (gKeyMng.keyState[KEY_INPUT_Z] == 1)
             {
                 PlaySoundMem(soundHandle, DX_PLAYTYPE_BACK);
             }
 
             // 音楽停止
-            if (keyState[KEY_INPUT_X] == 1)
+            if (gKeyMng.keyState[KEY_INPUT_X] == 1)
             {
                 StopSoundMem(soundHandle);
             }
@@ -178,28 +165,28 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 ArrayZero();
 
                 // キー入力
-                if (keyState[KEY_INPUT_D] == 1)
+                if (gKeyMng.keyState[KEY_INPUT_D] == 1)
                 {
                     posX += 1;
                 }
 
-                if (keyState[KEY_INPUT_A] == 1)
+                if (gKeyMng.keyState[KEY_INPUT_A] == 1)
                 {
                     posX -= 1;
                 }
 
-                if (keyState[KEY_INPUT_W] == 1)
+                if (gKeyMng.keyState[KEY_INPUT_W] == 1)
                 {
                     posY -= 1;
                 }
 
-                if (keyState[KEY_INPUT_S] == 1)
+                if (gKeyMng.keyState[KEY_INPUT_S] == 1)
                 {
                     posY += 1;
                 }
 
                 // 現在位置に1を配置
-                if (keyState[KEY_INPUT_P] == 1)
+                if (gKeyMng.keyState[KEY_INPUT_P] == 1)
                 {
                     field[posY][posX] = 1;
                 }
@@ -233,6 +220,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
                 // 配列描画
                 ArrayDisp();
+
+                gKoko.Update();
 
                 // スコア表示
                 DrawFormatString(100, 50, GetColor(255, 255, 255), "score : %d", score);
