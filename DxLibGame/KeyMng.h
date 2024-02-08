@@ -11,8 +11,8 @@ public:
 
 	KeyMng();
 
-	void KeyUpdate();
+	void Update();
 
 };
 
-extern KeyMng gKeyMng;
+extern KeyMng Key;

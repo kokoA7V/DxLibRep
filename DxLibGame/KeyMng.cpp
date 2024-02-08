@@ -1,7 +1,7 @@
 
 #include "KeyMng.h"
 
-KeyMng gKeyMng;
+KeyMng Key;
 
 KeyMng::KeyMng()
 {
@@ -9,7 +9,7 @@ KeyMng::KeyMng()
 }
 
 //キー入力状態を更新する関数
-void KeyMng::KeyUpdate()
+void KeyMng::Update()
 {
     GetHitKeyStateAll(buf);
     for (int i = 0; i < 256; i++)
