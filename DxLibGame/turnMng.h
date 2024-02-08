@@ -1,12 +1,11 @@
 #pragma once
 #include"DxLib.h"
 
-
-
 class turnMng {
 private:
 public:
-	enum phase {
+	// フェイズ
+	enum Phase{
 		start,
 		attack,
 		draw,
@@ -16,6 +15,7 @@ public:
 		end,
 		phaseTotalNum,
 	};
-
+	int phaseNo = 0;
+	void Update(Phase);
 };
 
