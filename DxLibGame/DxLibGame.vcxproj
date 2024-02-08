@@ -152,6 +152,7 @@
     <ClCompile Include="KeyMng.cpp" />
     <ClCompile Include="koko.cpp" />
     <ClCompile Include="test.cpp" />
+    <ClCompile Include="turnMng.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KeyMng.h" />
