@@ -149,6 +149,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CardGene.cpp" />
+    <ClCompile Include="NormalUnit.cpp" />
     <ClCompile Include="KeyMng.cpp" />
     <ClCompile Include="koko.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -157,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="card.h" />
+    <ClInclude Include="CardGene.h" />
     <ClInclude Include="KeyMng.h" />
     <ClInclude Include="koko.h" />
     <ClInclude Include="Player.h" />

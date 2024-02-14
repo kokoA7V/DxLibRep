@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "KeyMng.h"
 #include "koko.h"
+#include "turnMng.h"
 
 //
 //ここで変数を用意
@@ -17,14 +18,16 @@ int spriteHandle2;
 // サウンドハンドル
 int soundHandle;
 
+
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-
+    TurnMng turnMng;
     ChangeWindowMode(TRUE);//非全画面にセット
     SetGraphMode(640, 480, 32);//画面サイズ指定
     SetOutApplicationLogValidFlag(FALSE);//Log.txtを生成しないように設定
     if (DxLib_Init() == 1) { return -1; }//初期化に失敗時にエラーを吐かせて終了
-
+    
     //ここで画像・音を読み込み
     {
         gKoko.Init();
@@ -32,7 +35,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         spriteHandle = LoadGraph("Sprite/test.PNG");
         spriteHandle2 = LoadGraph("Sprite/test2.PNG");
 
-        soundHandle = LoadSoundMem("Sound/Twinfield - Kabedon.mp3");
+        soundHandle = LoadSoundMem("Sound/Twinfield - Kabedon.mp3");        
     }
 
     while (ProcessMessage() == 0)
@@ -61,17 +64,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             {
                 StopSoundMem(soundHandle);
             }
-
             // ここからパズル盤面プログラム
             {
                 gKoko.Update();
             }
+            {
+                turnMng.Update();
+            }
+
         }
 
         ScreenFlip();//裏画面を表画面にコピー
     }
-
+    
     DxLib_End();
     return 0;
 }
+
 

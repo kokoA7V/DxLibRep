@@ -2,8 +2,14 @@
 #include "DxLib.h"
 
 
-class card {
-private :
-public:
-
-};
+//class card {
+//private :
+//	enum CardStayle {
+//		unit,
+//		effect,
+//	};
+//public:
+//	int pow = 0;
+//	CardStayle cardStyle;
+//	void CardEffect();
+//};
