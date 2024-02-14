@@ -27,7 +27,7 @@ CardGene::CardGene() {
 		}
 	}
 }
-// カードを取り出す取り出す
+// カードを取り出す
 int CardGene::hand_card() {
 	int hand = p_deck[0]; //排出するカードの数値を確定
 	//配列処理

@@ -2,27 +2,28 @@
 #include"turnMng.h"
 #include"CardGene.h"
 #include "KeyMng.h"
+#include "koko.h"
 
 TurnMng::TurnMng(){
 
 }
 
+
 void TurnMng::Update(){
 	DrawFormatString(500, 30, GetColor(255, 255, 255), "POW %d", pow);
 	switch (phaseNo)
-	{		
-
+	{
 	case start:
 		// スタートフェイズ処理
-		setHand = 0;
-		DrawFormatString(400, 10, GetColor(255, 255, 255), "StartPhase");
+		howManyHands();
+		DrawFormatString(400, 10, GetColor(255, 255, 255), "StartPhase : nowHands%d", nowHands);
 		NextPhase();
 		break;
 		
 	case attack:
 		// バトルフェイズ処理
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "AttackPhase");
-		// 自分の持ってるカードの合計攻撃力分相手にダメージを与える		
+		// 自分の持ってるカードの合計攻撃力分相手にダメージを与える	
 		DrawFormatString(200, 0, GetColor(255, 255, 255), "%d",pow,"ダメージを与えた！！");
 		NextPhase();
 		break;
@@ -32,17 +33,17 @@ void TurnMng::Update(){
 		pow = 0;
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "DrowPhase");
 		// カードを五枚になるように引く
+
 		for (nowHands; nowHands <= maxHand; )
 		{
-			if (hands[setHand] > 0)
+			if (hands[nowHands] <= 0)
 			{
 				int hand = DeckGene.hand_card();
-				hands[nowHands] = hand;
-				nowHands++; 			
+				hands[nowHands] = hand;		
 			}
 			else
 			{
-				setHand++;
+				nowHands++;
 			}
 		}
 		
@@ -75,15 +76,15 @@ void TurnMng::Update(){
 			}
 		}
 
-		DrawFormatString(200, 300, GetColor(255, 255, 255), "CardNum %d", hands[setHand]);
-		DrawFormatString(400, 300, GetColor(255, 255, 255), "nowHand %d", setHand);
+		DrawFormatString(200, 300, GetColor(255, 255, 255), "攻撃力 %d", hands[setHand]);
+		DrawFormatString(200, 350, GetColor(255, 255, 255), "今持ってるカードの番号 %d", setHand);
+		DrawFormatString(200, 400, GetColor(255, 255, 255), "nowHands %d", nowHands);
 
 		// カードのプレイ
 		if (Key.keyState[KEY_INPUT_SPACE] == 1)
 		{
 			pow += hands[setHand];
 			hands[setHand] = 0;
-			nowHands--;
 		}
 		
 		NextPhase();
@@ -105,4 +106,17 @@ void TurnMng::Update(){
 
 void TurnMng::NextPhase() {
 	if (Key.keyState[KEY_INPUT_RETURN] == 1)phaseNo++;
+}
+
+int  TurnMng::howManyHands() {
+	setHand = 0;
+	nowHands = 0;
+	for (int i = 0; i <= maxHand; ++i)
+	{
+		if (hands[i] < 0)
+		{
+			nowHands++;
+		}
+	}
+	return nowHands;
 }
