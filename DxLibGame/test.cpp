@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "KeyMng.h"
 #include "koko.h"
+#include "turnMng.h"
 
 //
 //ここで変数を用意
@@ -22,6 +23,7 @@ int soundHandle;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+    TurnMng turnMng;
 
     ChangeWindowMode(TRUE);//非全画面にセット
     SetGraphMode(640, 480, 32);//画面サイズ指定
@@ -32,12 +34,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         gKoko.Init();
 
-        sceneNum = 2;
+        sceneNum = 1;
 
         spriteHandle = LoadGraph("Sprite/test.PNG");
         spriteHandle2 = LoadGraph("Sprite/test2.PNG");
 
         soundHandle = LoadSoundMem("Sound/Twinfield - Kabedon.mp3");
+
+        
     }
 
     while (ProcessMessage() == 0)
@@ -54,6 +58,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             break;
 
         case 1:
+            turnMng.Update();
             break;
 
         case 2:
