@@ -8,14 +8,24 @@ TurnMng::TurnMng(){
 
 }
 
-
 void TurnMng::Update(){
+
+	
+
 	DrawFormatString(500, 30, GetColor(255, 255, 255), "POW %d", pow);
+	
 	switch (phaseNo)
 	{
 	case start:
+		for (int i = 0; i < maxHand-1;++i)
+		{
+			if (hands[i] == 0)
+			{
+				closeToTheFront(i + 1);
+			}
+		}
 		// スタートフェイズ処理
-		howManyHands();
+		nowHands = howManyHands();
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "StartPhase : nowHands%d", nowHands);
 		NextPhase();
 		break;
@@ -34,12 +44,12 @@ void TurnMng::Update(){
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "DrowPhase");
 		// カードを五枚になるように引く
 
-		for (nowHands; nowHands <= maxHand; )
+		for (nowHands; nowHands < maxHand; )
 		{
 			if (hands[nowHands] <= 0)
 			{
 				int hand = DeckGene.hand_card();
-				hands[nowHands] = hand;		
+				hands[nowHands] = hand;	
 			}
 			else
 			{
@@ -63,7 +73,7 @@ void TurnMng::Update(){
 		// カード選択
 		if (Key.keyState[KEY_INPUT_UP] == 1)
 		{
-			if (setHand < maxHand)
+			if (setHand < maxHand-1)
 			{
 				setHand++;
 			}
@@ -108,15 +118,20 @@ void TurnMng::NextPhase() {
 	if (Key.keyState[KEY_INPUT_RETURN] == 1)phaseNo++;
 }
 
-int  TurnMng::howManyHands() {
-	setHand = 0;
-	nowHands = 0;
-	for (int i = 0; i <= maxHand; ++i)
+int TurnMng::howManyHands() {
+	int manyHands = 0;
+	for (int i = 0; i < maxHand; ++i)
 	{
-		if (hands[i] < 0)
+		if (hands[i] > 0)
 		{
-			nowHands++;
+			manyHands++;
 		}
 	}
-	return nowHands;
+	return  manyHands;
+}
+
+// 数字を前に詰める
+void TurnMng::closeToTheFront(int line) {
+	hands[line - 1] = hands[line];
+	hands[line] = 0;
 }

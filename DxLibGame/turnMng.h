@@ -5,8 +5,8 @@
 
 class TurnMng {
 private:
-	const int maxHand = 4;
 public:
+    int maxHand = 5;
 	// 手札の枚数
 	int nowHands = 0;
 	// 使おうとしてるカード
@@ -32,4 +32,5 @@ public:
 	void Update();
 	void NextPhase();
 	int howManyHands();
+	void closeToTheFront(int line);
 };
