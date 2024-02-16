@@ -91,13 +91,13 @@ public:
 	void Update();
 
 	void ArrayZero(int array[5][5]);
-    void ArrayDisp(int array[5][5]);
+    void ArrayDemoDisp(int array[5][5], int posX, int posY);
 	void ArrayCopy(int fromArray[5][5], int toArray[5][5]);
     void ArrayAdd(int fromArray[5][5], int toArray[5][5], int offsetX, int offsetY);
     void ArrayMul(int array[5][5], int value);
 
     bool SetCheck();
-    void Bar(int level);
+    void LevelLine(int level);
 	void HorizonCheck();
     void LineDown(int line);
 

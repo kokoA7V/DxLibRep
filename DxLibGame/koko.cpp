@@ -24,7 +24,7 @@ void koko::Init()
 
 void koko::Update()
 {
-    PlayerMove();
+    //PlayerMove();
 
     // ピース変更
     if (Key.keyState[KEY_INPUT_0] == 1)
@@ -65,27 +65,27 @@ void koko::Update()
     ArrayAdd(plPiece, dispField, posX, posY);
 
     // バー表示
-    Bar(level);
+    LevelLine(level);
 
     // 現在位置にピースを配置
-    if (Key.keyState[KEY_INPUT_P] == 1)
-    {
-        if (SetCheck())
-        {
-            ArrayAdd(pieceData[pieceNum], field, posX, posY);
-            Debug("せいこう");
-        }
-        else
-        {
-            Debug("おけないよーん");
-        }
-    }
+    //if (Key.keyState[KEY_INPUT_P] == 1)
+    //{
+    //    if (SetCheck())
+    //    {
+    //        ArrayAdd(pieceData[pieceNum], field, posX, posY);
+    //        Debug("せいこう");
+    //    }
+    //    else
+    //    {
+    //        Debug("おけないよーん");
+    //    }
+    //}
 
     // 横一列並んだら消す
     HorizonCheck();
 
     // 配列描画
-    ArrayDisp(dispField);
+    ArrayDemoDisp(dispField, 100, 100);
 
     // スコア描画
     DrawFormatString(100, 50, GetColor(255, 255, 255), "score : %d", score);
@@ -105,7 +105,7 @@ void koko::ArrayZero(int array[5][5])
 }
 
 // 配列描画
-void koko::ArrayDisp(int array[5][5])
+void koko::ArrayDemoDisp(int array[5][5], int posX, int posY)
 {
     int space = 15;
 
@@ -115,8 +115,8 @@ void koko::ArrayDisp(int array[5][5])
         {
             DrawFormatString
             (
-                100 + (j * space),
-                100 + (i * space),
+                posX + (j * space),
+                posY + (i * space),
                 GetColor(255, 255, 255),
                 "%d",
                 array[i][j]
@@ -178,7 +178,7 @@ bool koko::SetCheck()
     return true;
 }
 
-void koko::Bar(int level)
+void koko::LevelLine(int level)
 {
     for (int i = 0; i < 5 - level; i++)
     {

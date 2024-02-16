@@ -5,7 +5,7 @@
 #include "koko.h"
 
 TurnMng::TurnMng(){
-
+	
 }
 
 void TurnMng::Update(){	
@@ -64,17 +64,35 @@ void TurnMng::Update(){
 	case levelUp:
 		// レベルアップフェイズ処理
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "LevelUpPhase");
-	
-		// パズルのレーン増える
 		
-		NextPhase();
+		// パズルのレーン増える
+		gKoko.level++;
+		
+		phaseNo++;
+		//NextPhase();
 		break;
 		
 	case main:
 		// メインフェイズ処理
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "MainPhase");
-		
-		// カード選択
+
+
+		// ここすくりぷと
+		gKoko.PlayerMove();
+		if (Key.keyState[KEY_INPUT_P] == 1)
+		{
+			if (gKoko.SetCheck())
+			{
+				gKoko.ArrayAdd(gKoko.pieceData[gKoko.pieceNum], gKoko.field, gKoko.posX, gKoko.posY);
+				gKoko.Debug("せいこう");
+			}
+			else
+			{
+				gKoko.Debug("おけないよーん");
+			}
+		}
+		// ここまで
+		// カード
 		if (Key.keyState[KEY_INPUT_UP] == 1)
 		{
 			if (setHand < maxHand-1)
@@ -97,7 +115,7 @@ void TurnMng::Update(){
 
 		DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", nowHands);
 		
-		// カードのプレイ
+		// カードの選択　ここにパズル動かすすくりぷとをいれる
 		if (Key.keyState[KEY_INPUT_SPACE] == 1)
 		{
 			pow += hands[setHand];

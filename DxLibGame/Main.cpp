@@ -12,6 +12,7 @@
 // 0:なし
 // 1:よりまーデバッグ用
 // 2:ここデバッグ用
+// 3:統合デバッグ用
 int sceneNum = 0;
 
 // スプライトハンドル
@@ -34,14 +35,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         gKoko.Init();
 
-        sceneNum = 1;
+        sceneNum = 3;
 
         spriteHandle = LoadGraph("Sprite/test.PNG");
         spriteHandle2 = LoadGraph("Sprite/test2.PNG");
 
-        soundHandle = LoadSoundMem("Sound/Twinfield - Kabedon.mp3");
-
-        
+        soundHandle = LoadSoundMem("Sound/Twinfield - Kabedon.mp3");        
     }
 
     while (ProcessMessage() == 0)
@@ -84,6 +83,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             gKoko.Update();
 
         break;
+        // 統合デバッグシーン
+        case 3:
+            turnMng.Update();
+            //gKoko.Update();
+            break;
         }
 
         ScreenFlip();//裏画面を表画面にコピー
