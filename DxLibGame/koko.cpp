@@ -24,7 +24,7 @@ void koko::Init()
 
 void koko::Update()
 {
-    PlayerMove();
+    //PlayerMove();
 
     // ピース変更
     if (Key.keyState[KEY_INPUT_0] == 1)
@@ -67,8 +67,8 @@ void koko::Update()
     // バー表示
     LevelLine(level);
 
-    // 現在位置にピースを配置
-    PieceSet();
+    // 現在位置にピースを配置　起動したらセットするように変えたbyより
+    //PieceSet();
 
     // 横一列並んだら消す
     HorizonCheck();
@@ -170,18 +170,16 @@ bool koko::SetCheck()
 void koko::PieceSet()
 {
     // 現在位置にピースを配置
-    if (Key.keyState[KEY_INPUT_P] == 1)
+    if (SetCheck())
     {
-        if (SetCheck())
-        {
-            ArrayAdd(pieceData[pieceNum], field, posX, posY);
-            Debug("せいこう");
-        }
-        else
-        {
-            Debug("おけないよーん");
-        }
+        ArrayAdd(pieceData[pieceNum], field, posX, posY);
+        Debug("せいこう");
     }
+    else
+    {
+        Debug("おけないよーん");
+    }
+   
 }
 
 void koko::LevelLine(int level)

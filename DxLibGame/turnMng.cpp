@@ -1,17 +1,15 @@
-#include<DxLib.h>
-#include"turnMng.h"
-#include"CardGene.h"
+#include <DxLib.h>
+#include "turnMng.h"
+#include "CardGene.h"
 #include "KeyMng.h"
 #include "koko.h"
 
-TurnMng::TurnMng(){
-	
-}
+TurnMng::TurnMng(){}
 
 void TurnMng::Update(){	
 
 	// デバック用のpow表示
-	DrawFormatString(500, 30, GetColor(255, 255, 255), "POW %d", pow);
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "POW %d", pow);
 	
 	switch (phaseNo)
 	{
@@ -71,56 +69,90 @@ void TurnMng::Update(){
 		phaseNo++;
 		//NextPhase();
 		break;
-		
 	case main:
 		// メインフェイズ処理
-		DrawFormatString(400, 10, GetColor(255, 255, 255), "MainPhase");
-
-
-		// ここすくりぷと
-		gKoko.PlayerMove();
-		if (Key.keyState[KEY_INPUT_P] == 1)
+		DrawFormatString(400, 10, GetColor(255, 255, 255), "MainPhase\nスペースで切り替え\n");
+		if (mode==pazzle)
 		{
-			if (gKoko.SetCheck())
+			DrawFormatString(400, 70, GetColor(255, 255, 255), "パズルモード");
+		}
+		else
+		{
+			DrawFormatString(400, 70, GetColor(255, 255, 255), "カード選択モード");
+		}
+		// 手札表示
+		DrawFormatString(400, 400, GetColor(255, 255, 255), "setHands %d", hands[setHand]);
+
+		for (int i = 0; i < nowHands; i++)
+		{
+			// 選択してるなら文字を赤色に
+			if (setHand == i)
 			{
-				gKoko.ArrayAdd(gKoko.pieceData[gKoko.pieceNum], gKoko.field, gKoko.posX, gKoko.posY);
-				gKoko.Debug("せいこう");
+				DrawFormatString(i * 100, 300, GetColor(255, 0, 0), "攻撃力 %d", hands[i]);
+				DrawFormatString(i * 100, 350, GetColor(255, 0, 0), "番号 %d", i);
 			}
 			else
 			{
-				gKoko.Debug("おけないよーん");
+				DrawFormatString(i * 100, 300, GetColor(255, 255, 255), "攻撃力 %d", hands[i]);
+				DrawFormatString(i * 100, 350, GetColor(255, 255, 255), "番号 %d", i);
 			}
-		}
-		// ここまで
-		// カード
-		if (Key.keyState[KEY_INPUT_UP] == 1)
-		{
-			if (setHand < maxHand - 1)
-			{
-				setHand++;
-			}
-		}
-		if (Key.keyState[KEY_INPUT_DOWN] == 1)
-		{
-			if (setHand > 0)
-			{
-				setHand--;
-			}
-		}
-		for (int i=0;i<nowHands;i++)
-		{
-			DrawFormatString(0 + i * 100, 300, GetColor(255, 255, 255), "攻撃力 %d", hands[i]);
-			DrawFormatString(0 + i * 100, 350, GetColor(255, 255, 255), "番号 %d", i);
 		}
 
 		DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", nowHands);
-		DrawFormatString(150, 400, GetColor(255, 255, 255), "nowHands %d", setHand);
-		
-		// カードの選択　ここにパズル動かすすくりぷとをいれる
-		if (Key.keyState[KEY_INPUT_SPACE] == 1)
+		// パズルモードと手札選択モード切り替え
+		switch (mode)
 		{
-			pow += hands[setHand];
-			hands[setHand] = 0;
+		case cardSelect:
+						
+
+			// カード選択
+			if (Key.keyState[KEY_INPUT_D] == 1)
+			{
+				if (setHand < maxHand - 1)
+				{
+					setHand++;
+				}
+				else
+				{
+					setHand = 0;
+				}
+			}
+
+			if (Key.keyState[KEY_INPUT_A] == 1)
+			{
+				if (setHand > 0)
+				{
+					setHand--;
+				}
+				else
+				{
+					setHand = 4;
+				}
+			}
+
+			// カードの選択へモードチェンジ
+			if (Key.keyState[KEY_INPUT_P] == 1)
+			{
+				mode++;
+			}
+			break;
+		case pazzle:
+			// ここすくりぷと
+			gKoko.PlayerMove();
+			if (Key.keyState[KEY_INPUT_SPACE] == 1)
+			{
+				gKoko.PieceSet();
+				pow += hands[setHand];
+				hands[setHand] = 0;
+				HowManyHands();
+				mode = 0;
+			}
+			if (Key.keyState[KEY_INPUT_ESCAPE] == 1)
+			{
+				mode = 0;
+			}
+			// ここまで
+			break;
 		}
 		
 		NextPhase();

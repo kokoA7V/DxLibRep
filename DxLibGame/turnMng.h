@@ -29,6 +29,12 @@ public:
 		phaseTotalNum,
 	};
 	int phaseNo = 0;
+
+	enum Mode {
+		cardSelect,
+		pazzle,
+	};
+	int mode = 0;
 	// コンストラクタ
 	TurnMng();
 	// アップデート

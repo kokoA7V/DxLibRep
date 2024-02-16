@@ -86,7 +86,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // 統合デバッグシーン
         case 3:
             turnMng.Update();
-            //gKoko.Update();
+            gKoko.Update();
             break;
         }
 
