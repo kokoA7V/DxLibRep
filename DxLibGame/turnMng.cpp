@@ -8,42 +8,43 @@ TurnMng::TurnMng(){
 
 }
 
-void TurnMng::Update(){
+void TurnMng::Update(){	
 
-	
-
+	// デバック用のpow表示
 	DrawFormatString(500, 30, GetColor(255, 255, 255), "POW %d", pow);
 	
 	switch (phaseNo)
 	{
 	case start:
-		for (int i = 0; i < maxHand-1;++i)
-		{
-			if (hands[i] == 0)
-			{
-				closeToTheFront(i + 1);
-			}
-		}
 		// スタートフェイズ処理
-		nowHands = howManyHands();
+		
+		// 0があるならその次の数字を0に入れる
+		HandZeroGo();
+
+		// ハンドを数える
+		nowHands = HowManyHands();
+		
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "StartPhase : nowHands%d", nowHands);
+		
 		NextPhase();
 		break;
 		
 	case attack:
 		// バトルフェイズ処理
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "AttackPhase");
+		
 		// 自分の持ってるカードの合計攻撃力分相手にダメージを与える	
 		DrawFormatString(200, 0, GetColor(255, 255, 255), "%d",pow,"ダメージを与えた！！");
+		
 		NextPhase();
 		break;
 		
 	case drow:
-		// ドローフェイズ処理
 		pow = 0;
+		// ドローフェイズ処理
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "DrowPhase");
+		
 		// カードを五枚になるように引く
-
 		for (nowHands; nowHands < maxHand; )
 		{
 			if (hands[nowHands] <= 0)
@@ -63,13 +64,16 @@ void TurnMng::Update(){
 	case levelUp:
 		// レベルアップフェイズ処理
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "LevelUpPhase");
+	
 		// パズルのレーン増える
+		
 		NextPhase();
 		break;
 		
 	case main:
 		// メインフェイズ処理
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "MainPhase");
+		
 		// カード選択
 		if (Key.keyState[KEY_INPUT_UP] == 1)
 		{
@@ -85,11 +89,14 @@ void TurnMng::Update(){
 				setHand--;
 			}
 		}
+		for (int i=0;i<nowHands;i++)
+		{
+			DrawFormatString(0 + i * 100, 300, GetColor(255, 255, 255), "攻撃力 %d", hands[i]);
+			DrawFormatString(0 + i * 100, 350, GetColor(255, 255, 255), "番号 %d", i);
+		}
 
-		DrawFormatString(200, 300, GetColor(255, 255, 255), "攻撃力 %d", hands[setHand]);
-		DrawFormatString(200, 350, GetColor(255, 255, 255), "今持ってるカードの番号 %d", setHand);
-		DrawFormatString(200, 400, GetColor(255, 255, 255), "nowHands %d", nowHands);
-
+		DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", nowHands);
+		
 		// カードのプレイ
 		if (Key.keyState[KEY_INPUT_SPACE] == 1)
 		{
@@ -114,11 +121,13 @@ void TurnMng::Update(){
 	}
 }
 
+// 次のターンに進む
 void TurnMng::NextPhase() {
 	if (Key.keyState[KEY_INPUT_RETURN] == 1)phaseNo++;
 }
 
-int TurnMng::howManyHands() {
+// 手札の数を数えるメソッド
+int TurnMng::HowManyHands() {
 	int manyHands = 0;
 	for (int i = 0; i < maxHand; ++i)
 	{
@@ -131,7 +140,17 @@ int TurnMng::howManyHands() {
 }
 
 // 数字を前に詰める
-void TurnMng::closeToTheFront(int line) {
+void TurnMng::CloseToTheFront(int line) {
 	hands[line - 1] = hands[line];
 	hands[line] = 0;
+}
+
+void TurnMng::HandZeroGo(){
+	for (int i = 0; i < maxHand - 1; ++i)
+	{
+		if (hands[i] == 0)
+		{
+			CloseToTheFront(i + 1);
+		}
+	}
 }
