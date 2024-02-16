@@ -97,6 +97,7 @@ public:
     void ArrayMul(int array[5][5], int value);
 
     bool SetCheck();
+    void PieceSet();
     void LevelLine(int level);
 	void HorizonCheck();
     void LineDown(int line);

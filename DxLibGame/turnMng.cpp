@@ -95,7 +95,7 @@ void TurnMng::Update(){
 		// カード
 		if (Key.keyState[KEY_INPUT_UP] == 1)
 		{
-			if (setHand < maxHand-1)
+			if (setHand < maxHand - 1)
 			{
 				setHand++;
 			}
@@ -114,6 +114,7 @@ void TurnMng::Update(){
 		}
 
 		DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", nowHands);
+		DrawFormatString(150, 400, GetColor(255, 255, 255), "nowHands %d", setHand);
 		
 		// カードの選択　ここにパズル動かすすくりぷとをいれる
 		if (Key.keyState[KEY_INPUT_SPACE] == 1)
