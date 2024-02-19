@@ -19,6 +19,8 @@ int sceneNum = 0;
 int spriteHandle;
 int spriteHandle2;
 
+int testBox[7];
+
 // サウンドハンドル
 int soundHandle;
 
@@ -35,7 +37,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         gKoko.Init();
 
-        sceneNum = 3;
+        sceneNum = 2;
 
         spriteHandle = LoadGraph("Sprite/test.PNG");
         spriteHandle2 = LoadGraph("Sprite/test2.PNG");

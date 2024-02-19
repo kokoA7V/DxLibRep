@@ -15,6 +15,14 @@ void koko::Init()
 {
     level = 0;
 
+    boxHandle[0] = LoadGraph("Sprite/box0.PNG");
+    boxHandle[1] = LoadGraph("Sprite/box1.PNG");
+    boxHandle[2] = LoadGraph("Sprite/box2.PNG");
+    boxHandle[3] = LoadGraph("Sprite/box3.PNG");
+    boxHandle[4] = LoadGraph("Sprite/box4.PNG");
+    boxHandle[5] = LoadGraph("Sprite/box5.PNG");
+    boxHandle[6] = LoadGraph("Sprite/box6.PNG");
+
     pieceNum = 0;
 
     PlayerPosReset();
@@ -24,7 +32,7 @@ void koko::Init()
 
 void koko::Update()
 {
-    //PlayerMove();
+    PlayerMove();
 
     // ピース変更
     if (Key.keyState[KEY_INPUT_0] == 1)
@@ -69,15 +77,21 @@ void koko::Update()
 
     // 現在位置にピースを配置　起動したらセットするように変えたbyより
     //PieceSet();
+    if (Key.keyState[KEY_INPUT_P] == 1)
+    {
+        PieceSet();
+    }
 
     // 横一列並んだら消す
     HorizonCheck();
 
     // 配列描画
-    ArrayDemoDisp(dispField, 100, 100);
+    ArrayDemoDisp(dispField, 100, 50);
+
+    ArrayDisp(dispField, 100, 150);
 
     // スコア描画
-    DrawFormatString(100, 50, GetColor(255, 255, 255), "score : %d", score);
+    DrawFormatString(100, 25, GetColor(255, 255, 255), "score : %d", score);
     DrawFormatString(300, 0, GetColor(255, 255, 255), "%s", debug.c_str());
 }
 
@@ -93,7 +107,7 @@ void koko::ArrayZero(int array[5][5])
     }
 }
 
-// 配列描画
+// 配列仮描画
 void koko::ArrayDemoDisp(int array[5][5], int posX, int posY)
 {
     int space = 15;
@@ -110,6 +124,38 @@ void koko::ArrayDemoDisp(int array[5][5], int posX, int posY)
                 "%d",
                 array[i][j]
             );
+        }
+    }
+}
+
+void koko::ArrayDisp(int array[5][5], int posX, int posY)
+{
+    int space = 64;
+
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if (!SetCheck() && array[i][j] == 2)
+            {
+                DrawGraph
+                (
+                    posX + (j * space),
+                    posY + (i * space),
+                    boxHandle[5],
+                    0
+                );
+            }
+            else
+            {
+                DrawGraph
+                (
+                    posX + (j * space),
+                    posY + (i * space),
+                    boxHandle[array[i][j]],
+                    0
+                );
+            }
         }
     }
 }
