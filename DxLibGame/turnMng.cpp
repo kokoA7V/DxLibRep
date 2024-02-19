@@ -9,7 +9,7 @@ TurnMng::TurnMng(){}
 void TurnMng::Update(){	
 
 	// デバック用のpow表示
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "POW %d", pow);
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "DEBUG:POW %d", pow);
 	
 	switch (phaseNo)
 	{
@@ -80,6 +80,7 @@ void TurnMng::Update(){
 		{
 			DrawFormatString(400, 70, GetColor(255, 255, 255), "カード選択モード");
 		}
+		
 		// 手札表示
 		DrawFormatString(400, 400, GetColor(255, 255, 255), "setHands %d", hands[setHand]);
 
@@ -99,6 +100,7 @@ void TurnMng::Update(){
 		}
 
 		DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", nowHands);
+		
 		// パズルモードと手札選択モード切り替え
 		switch (mode)
 		{
@@ -137,6 +139,7 @@ void TurnMng::Update(){
 			}
 			break;
 		case pazzle:
+			
 			// ここすくりぷと
 			gKoko.PlayerMove();
 			if (Key.keyState[KEY_INPUT_SPACE] == 1)
