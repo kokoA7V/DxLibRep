@@ -25,32 +25,32 @@ void koko::Init()
 
     pieceNum = 0;
 
-    PlayerPosReset();
+    PiecePosReset();
 
     Debug("デバッグ文↓");
 }
 
 void koko::Update()
 {
-    PlayerMove();
+    PieceMove();
 
     // ピース変更
     if (Key.keyState[KEY_INPUT_0] == 1)
     {
         pieceNum = 0;
-        PlayerPosReset();
+        PiecePosReset();
         Debug("ピース0に変更");
     }
     if (Key.keyState[KEY_INPUT_1] == 1)
     {
         pieceNum = 1;
-        PlayerPosReset();
+        PiecePosReset();
         Debug("ピース1に変更");
     }
     if (Key.keyState[KEY_INPUT_2] == 1)
     {
         pieceNum = 2;
-        PlayerPosReset();
+        PiecePosReset();
         Debug("ピース2に変更");
     }
 
@@ -292,7 +292,7 @@ void koko::LineDown(int line)
     }
 }
 
-void koko::PlayerMove()
+void koko::PieceMove()
 {
     // キー入力
     if (Key.keyState[KEY_INPUT_D] == 1 && posX <= (4 - pieceSize[pieceNum][0]))
@@ -328,7 +328,7 @@ void koko::PlayerMove()
     }
 }
 
-void koko::PlayerPosReset()
+void koko::PiecePosReset()
 {
     posX = 0;
     posY = 5 - pieceSize[pieceNum][1];

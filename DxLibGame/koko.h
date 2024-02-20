@@ -105,8 +105,8 @@ public:
 	void HorizonCheck();
     void LineDown(int line);
 
-    void PlayerMove();
-    void PlayerPosReset();
+    void PieceMove();
+    void PiecePosReset();
 };
 
 extern koko gKoko;

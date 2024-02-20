@@ -15,7 +15,7 @@ void TurnMng::Update(){
 	{
 	case start:
 		// スタートフェイズ処理
-		
+
 		// 0があるならその次の数字を0に入れる
 		HandZeroGo();
 
@@ -89,13 +89,13 @@ void TurnMng::Update(){
 			// 選択してるなら文字を赤色に
 			if (setHand == i)
 			{
-				DrawFormatString(i * 100, 300, GetColor(255, 0, 0), "攻撃力 %d", hands[i]);
-				DrawFormatString(i * 100, 350, GetColor(255, 0, 0), "番号 %d", i);
+				DrawFormatString(i * 100 + 50, 300, GetColor(255, 0, 0), "攻撃力 %d", hands[i]);
+				DrawFormatString(i * 100 + 50, 350, GetColor(255, 0, 0), "番号 %d", i);
 			}
 			else
 			{
-				DrawFormatString(i * 100, 300, GetColor(255, 255, 255), "攻撃力 %d", hands[i]);
-				DrawFormatString(i * 100, 350, GetColor(255, 255, 255), "番号 %d", i);
+				DrawFormatString(i * 100 + 50, 300, GetColor(255, 255, 255), "攻撃力 %d", hands[i]);
+				DrawFormatString(i * 100 + 50, 350, GetColor(255, 255, 255), "番号 %d", i);
 			}
 		}
 
@@ -141,7 +141,7 @@ void TurnMng::Update(){
 		case pazzle:
 			
 			// ここすくりぷと
-			gKoko.PlayerMove();
+			gKoko.PieceMove();
 			if (Key.keyState[KEY_INPUT_SPACE] == 1)
 			{
 				gKoko.PieceSet();
