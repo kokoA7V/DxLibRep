@@ -82,22 +82,7 @@ void TurnMng::Update(){
 		}
 		
 		// 手札表示
-		DrawFormatString(400, 400, GetColor(255, 255, 255), "setHands %d", hands[setHand]);
-
-		for (int i = 0; i < nowHands; i++)
-		{
-			// 選択してるなら文字を赤色に
-			if (setHand == i)
-			{
-				DrawFormatString(i * 100 + 50, 300, GetColor(255, 0, 0), "攻撃力 %d", hands[i]);
-				DrawFormatString(i * 100 + 50, 350, GetColor(255, 0, 0), "番号 %d", i);
-			}
-			else
-			{
-				DrawFormatString(i * 100 + 50, 300, GetColor(255, 255, 255), "攻撃力 %d", hands[i]);
-				DrawFormatString(i * 100 + 50, 350, GetColor(255, 255, 255), "番号 %d", i);
-			}
-		}
+		DispHands();
 
 		DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", nowHands);
 		
@@ -108,29 +93,7 @@ void TurnMng::Update(){
 						
 
 			// カード選択
-			if (Key.keyState[KEY_INPUT_D] == 1)
-			{
-				if (setHand < maxHand - 1)
-				{
-					setHand++;
-				}
-				else
-				{
-					setHand = 0;
-				}
-			}
-
-			if (Key.keyState[KEY_INPUT_A] == 1)
-			{
-				if (setHand > 0)
-				{
-					setHand--;
-				}
-				else
-				{
-					setHand = 4;
-				}
-			}
+			SelectHand();
 
 			// カードの選択へモードチェンジ
 			if (Key.keyState[KEY_INPUT_P] == 1)
@@ -140,7 +103,6 @@ void TurnMng::Update(){
 			break;
 		case pazzle:
 			
-			// ここすくりぷと
 			gKoko.PieceMove();
 			if (Key.keyState[KEY_INPUT_SPACE] == 1)
 			{
@@ -154,7 +116,6 @@ void TurnMng::Update(){
 			{
 				mode = 0;
 			}
-			// ここまで
 			break;
 		}
 		
@@ -165,6 +126,19 @@ void TurnMng::Update(){
 		// トラッシュフェイズ処理
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "TrushPhase");
 		//手札を捨てる
+
+		// カード選択
+		SelectHand();
+
+		if (Key.keyState[KEY_INPUT_SPACE] == 1)
+		{
+			hands[setHand] = 0;
+			HowManyHands();
+		}
+
+		// 手札表示
+		DispHands();
+		
 		NextPhase();
 		break;
 	case end:
@@ -199,12 +173,60 @@ void TurnMng::CloseToTheFront(int line) {
 	hands[line] = 0;
 }
 
+// 0があったら数字を前に詰めるスクリプトを起動
 void TurnMng::HandZeroGo(){
 	for (int i = 0; i < maxHand - 1; ++i)
 	{
 		if (hands[i] == 0)
 		{
 			CloseToTheFront(i + 1);
+		}
+	}
+}
+
+// 手札を表示させる
+void TurnMng::DispHands() {
+	DrawFormatString(400, 400, GetColor(255, 255, 255), "setHands %d", hands[setHand]);
+
+	for (int i = 0; i < nowHands; i++)
+	{
+		// 選択してるなら文字を赤色に
+		if (setHand == i)
+		{
+			DrawFormatString(i * 100 + 50, 300, GetColor(255, 0, 0), "攻撃力 %d", hands[i]);
+			DrawFormatString(i * 100 + 50, 350, GetColor(255, 0, 0), "番号 %d", i);
+		}
+		else
+		{
+			DrawFormatString(i * 100 + 50, 300, GetColor(255, 255, 255), "攻撃力 %d", hands[i]);
+			DrawFormatString(i * 100 + 50, 350, GetColor(255, 255, 255), "番号 %d", i);
+		}
+	}
+}
+
+// カード選択
+void TurnMng::SelectHand() {
+	if (Key.keyState[KEY_INPUT_D] == 1)
+	{
+		if (setHand < maxHand - 1)
+		{
+			setHand++;
+		}
+		else
+		{
+			setHand = 0;
+		}
+	}
+
+	if (Key.keyState[KEY_INPUT_A] == 1)
+	{
+		if (setHand > 0)
+		{
+			setHand--;
+		}
+		else
+		{
+			setHand = 4;
 		}
 	}
 }

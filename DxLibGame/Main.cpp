@@ -37,7 +37,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         gKoko.Init();
 
-        sceneNum = 1;
+        sceneNum = 4;
 
         spriteHandle = LoadGraph("Sprite/test.PNG");
         spriteHandle2 = LoadGraph("Sprite/test2.PNG");
@@ -91,9 +91,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             gKoko.Update();
             break;
         case 4:
+            // タイトル画面
+            SetFontSize(75);
+            DrawFormatString(40, 100, GetColor(255, 255, 255), "CrackBlock.exe");
+            SetFontSize(30);
+            DrawFormatString(270, 250, GetColor(255, 255, 255), "START");
+            if (CheckHitKeyAll())
+            {
+                sceneNum = 5;
+            }
+            break;
+        case 5:
+
             break;
         }
-
         ScreenFlip();//裏画面を表画面にコピー
     }
 
