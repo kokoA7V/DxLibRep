@@ -21,6 +21,8 @@ int spriteHandle2;
 
 int testBox[7];
 
+int setBottum = 0;
+
 // サウンドハンドル
 int soundHandle;
 
@@ -38,6 +40,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         gKoko.Init();
 
         sceneNum = 4;
+        setBottum = 0;
 
         spriteHandle = LoadGraph("Sprite/test.PNG");
         spriteHandle2 = LoadGraph("Sprite/test2.PNG");
@@ -95,14 +98,96 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             SetFontSize(75);
             DrawFormatString(40, 100, GetColor(255, 255, 255), "CrackBlock.exe");
             SetFontSize(30);
-            DrawFormatString(270, 250, GetColor(255, 255, 255), "START");
-            if (CheckHitKeyAll())
+            if (Key.keyState[KEY_INPUT_S] == 1)
             {
-                sceneNum = 5;
+                if (setBottum < 2)
+                {
+                    setBottum++;
+                }
+                else
+                {
+                    setBottum = 0;
+                }
+            }
+
+            if (Key.keyState[KEY_INPUT_W] == 1)
+            {
+                if (setBottum > 0)
+                {
+                    setBottum--;
+                }
+                else
+                {
+                    setBottum = 2;
+                }
+            }
+            switch (setBottum)
+            {
+            case 0:
+                // スタートセレクト状態
+                DrawFormatString(40, 300, GetColor(255, 0, 0), "START 　　　　げーむはじめるよ");
+                DrawFormatString(40, 330, GetColor(255, 255, 255), "OPTION");
+                DrawFormatString(40, 360, GetColor(255, 255, 255), "EXIT");
+                if (Key.keyState[KEY_INPUT_RETURN] == 1)
+                {
+                    sceneNum = 5;
+                }
+                break;
+            case 1:
+                // オプションセレクト状態
+                DrawFormatString(40, 300, GetColor(255, 255, 255), "START");
+                DrawFormatString(40, 330, GetColor(255, 0, 0), "OPTION　　　　おぷしょんひらくよ");
+                DrawFormatString(40, 360, GetColor(255, 255, 255), "EXIT");
+                if (Key.keyState[KEY_INPUT_RETURN] == 1)
+                {
+                    sceneNum = 8;
+                }
+                break;
+            case 2:
+                // イグジット選択状態
+                DrawFormatString(40, 300, GetColor(255, 255, 255), "START");
+                DrawFormatString(40, 330, GetColor(255, 255, 255), "OPTION");
+                DrawFormatString(40, 360, GetColor(255, 0, 0), "EXIT  　　　　げーむをとじるよ");
+                if (Key.keyState[KEY_INPUT_RETURN] == 1)
+                {
+                    DxLib_End();
+                }
+                break;
             }
             break;
         case 5:
-
+            // いろいろセレクト画面
+            SetFontSize(40);
+            DrawFormatString(30, 100, GetColor(255, 255, 255), "今はまだ何もないセレクト画面\nENTERで次の画面へ");
+            if (Key.keyState[KEY_INPUT_RETURN] == 1)
+            {
+                sceneNum++;
+            }
+            break;
+        case 6:
+            // バトルシーン
+            SetFontSize(16);
+            turnMng.Update();
+            break;
+        case 7:
+            SetFontSize(40);
+            DrawFormatString(30, 100, GetColor(255, 255, 255), "今はまだ何もない\nリザルト画面何か押すとタイトルへ");
+            if (CheckHitKeyAll())
+            {
+                sceneNum = 4;
+            }
+            // 結果表示
+            break;
+        case 8:
+            SetFontSize(40);
+            DrawFormatString(30, 100, GetColor(255, 255, 255), "今はまだ何もないオプション画面\nESCでタイトルへ");
+            // 音量設定
+            // 対面操作可否(よくわからん)
+            // ｸﾚｼﾞｯﾄ
+            if (Key.keyState[KEY_INPUT_ESCAPE] == 1)
+            {
+                sceneNum = 4;
+            }
             break;
         }
         ScreenFlip();//裏画面を表画面にコピー
