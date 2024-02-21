@@ -162,6 +162,7 @@
     <ClInclude Include="CardGene.h" />
     <ClInclude Include="KeyMng.h" />
     <ClInclude Include="koko.h" />
+    <ClInclude Include="Piece.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="turnMng.h" />
   </ItemGroup>

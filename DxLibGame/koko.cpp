@@ -96,52 +96,53 @@ void koko::Update()
 }
 
 // 配列初期化
-void koko::ArrayZero(int array[5][5])
+void koko::ArrayZero(int array[fieldSizeY][fieldSizeX])
 {
-    for (int i = 0; i < 5; i++)
+    for (int y = 0; y < fieldSizeX; y++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int x = 0; x < fieldSizeY; x++)
         {
-            array[i][j] = 0;
+            array[y][x] = 0;
         }
     }
 }
 
 // 配列仮描画
-void koko::ArrayDemoDisp(int array[5][5], int posX, int posY)
+void koko::ArrayDemoDisp(int array[fieldSizeY][fieldSizeX], int posX, int posY)
 {
     int space = 15;
 
-    for (int i = 0; i < 5; i++)
+    for (int y = 0; y < fieldSizeX; y++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int x = 0; x < fieldSizeY; x++)
         {
             DrawFormatString
             (
-                posX + (j * space),
-                posY + (i * space),
+                posX + (x * space),
+                posY + (y * space),
                 GetColor(255, 255, 255),
                 "%d",
-                array[i][j]
+                array[y][x]
             );
         }
     }
 }
 
-void koko::ArrayDisp(int array[5][5], int posX, int posY)
+// イラスト配列描画
+void koko::ArrayDisp(int array[fieldSizeY][fieldSizeX], int posX, int posY)
 {
     int space = 64;
 
-    for (int i = 0; i < 5; i++)
+    for (int y = 0; y < fieldSizeX; y++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int x = 0; x < fieldSizeY; x++)
         {
-            if (!SetCheck() && array[i][j] == 2)
+            if (!SetCheck() && array[y][x] == 2)
             {
                 DrawGraph
                 (
-                    posX + (j * space),
-                    posY + (i * space),
+                    posX + (x * space),
+                    posY + (y * space),
                     boxHandle[5],
                     0
                 );
@@ -150,9 +151,9 @@ void koko::ArrayDisp(int array[5][5], int posX, int posY)
             {
                 DrawGraph
                 (
-                    posX + (j * space),
-                    posY + (i * space),
-                    boxHandle[array[i][j]],
+                    posX + (x * space),
+                    posY + (y * space),
+                    boxHandle[array[y][x]],
                     0
                 );
             }
@@ -161,50 +162,53 @@ void koko::ArrayDisp(int array[5][5], int posX, int posY)
 }
 
 // 配列をコピー
-void koko::ArrayCopy(int fromArray[5][5], int toArray[5][5])
+void koko::ArrayCopy(int fromArray[fieldSizeY][fieldSizeX], int toArray[5][5])
 {
-    for (int i = 0; i < 5; i++)
+    for (int y = 0; y < fieldSizeY; y++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int x = 0; x < fieldSizeX; x++)
         {
-            toArray[i][j] = fromArray[i][j];
+            toArray[y][x] = fromArray[y][x];
         }
     }
 }
 
 // 配列加算
-void koko::ArrayAdd(int fromArray[5][5], int toArray[5][5], int offsetX, int offsetY)
+void koko::ArrayAdd(int fromArray[fieldSizeY][fieldSizeX], int toArray[fieldSizeY][fieldSizeX], int offsetX, int offsetY)
 {
-    for (int i = 0; i < 5; i++)
+    for (int y = 0; y < fieldSizeY; y++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int x = 0; x < fieldSizeX; x++)
         {
-            if (j >= offsetX && i >= offsetY)
+            if (x >= offsetX && y >= offsetY)
             {
-                toArray[i][j] += fromArray[i - offsetY][j - offsetX];
+                toArray[y][x] += fromArray[y - offsetY][x - offsetX];
             }
         }
     }
 }
 
-void koko::ArrayMul(int array[5][5], int value)
+// 配列かけ算
+void koko::ArrayMul(int array[fieldSizeY][fieldSizeX], int value)
 {
-    for (int i = 0; i < 5; i++)
+    for (int y = 0; y < fieldSizeY; y++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int x = 0; x < fieldSizeX; x++)
         {
-            array[i][j] *= value;
+            array[y][x] *= value;
         }
     }
 }
 
+// プレイヤーピースが設置済みピースに被ってないか確認
+// trueで置いてもよい、falseは被ってる
 bool koko::SetCheck()
 {
-    for (int i = 0; i < 5; i++)
+    for (int y = 0; y < fieldSizeY; y++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int x = 0; x < fieldSizeX; x++)
         {
-            if (dispField[i][j] == 3 || dispField[i][j] == 6)
+            if (dispField[y][x] == 3 || dispField[y][x] == 6)
             {
                 return false;
             }
@@ -213,6 +217,7 @@ bool koko::SetCheck()
     return true;
 }
 
+// fieldにピースを配置
 void koko::PieceSet()
 {
     // 現在位置にピースを配置
@@ -228,17 +233,20 @@ void koko::PieceSet()
    
 }
 
+// 引数は0~5
+// 下から順に使えるようになる
 void koko::LevelLine(int level)
 {
-    for (int i = 0; i < 5 - level; i++)
+    for (int y = 0; y < fieldSizeY - level; y++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int x = 0; x < fieldSizeX; x++)
         {
-            dispField[i][j] += 4;
+            dispField[y][x] += 4;
         }
     }
 }
 
+// 横一列並んだ時の処理
 void koko::HorizonCheck()
 {
     int horizon = 0;
@@ -248,23 +256,25 @@ void koko::HorizonCheck()
         line[i] = false;
     }
 
-    for (int i = 0; i < 5; i++)
+    for (int y = 0; y < fieldSizeY; y++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int x = 0; x < fieldSizeX; x++)
         {
-            horizon += field[i][j];
+            horizon += field[y][x];
         }
 
         if (horizon == 5)
         {
-            for (int j = 0; j < 5; j++)
+            for (int x = 0; x < fieldSizeX; x++)
             {
-                field[i][j] = 0;
+                field[y][x] = 0;
             }
-            if (i != 0)
+            if (y != 0)
             {
-                line[i - 1] = true;
+                line[y - 1] = true;
             }
+
+            // 横一列消えたときの処理
             score += 1;
             Debug("ワンポインツ！");
         }
@@ -283,24 +293,61 @@ void koko::HorizonCheck()
     }
 }
 
+// 引数は0~3（4を入れるとフィールド範囲外になる）
+// 指定列を一個下へ移動、指定列を０に
 void koko::LineDown(int line)
 {
-    for (int i = 0; i < 5; i++)
+    for (int x = 0; x < fieldSizeX; x++)
     {
-        field[line + 1][i] = field[line][i];
-        field[line][i] = 0;
+        field[line + 1][x] = field[line][x];
+        field[line][x] = 0;
     }
 }
 
+// ピースサイズ出力
+// YorX = 0 : out Y
+// YorX = 1 : out X
+int koko::PieceSize(int num, int YorX)
+{
+    int sizeY = 0;
+    int sizeX = 0;
+
+    for (int y = 0; y < fieldSizeY; y++)
+    {
+        for (int x = 0; x < fieldSizeX; x++)
+        {
+            if (pieceData[num][y][x] >= 1)
+            {
+                if (x > sizeX)
+                {
+                    sizeX = x;
+                }
+
+                if (y > sizeY)
+                {
+                    sizeY = y;
+                }
+            }
+        }
+    }
+
+    sizeY++;
+    sizeX++;
+
+    if (YorX == 0) { return sizeY; }
+    if (YorX == 1) { return sizeX; }
+}
+
+// ピース移動
 void koko::PieceMove()
 {
     // キー入力
-    if (Key.keyState[KEY_INPUT_D] == 1 && posX <= (4 - pieceSize[pieceNum][0]))
+    if (Key.keyState[KEY_INPUT_D] == 1 && posX <= ((fieldSizeX - 1) - PieceSize(pieceNum, 1)))
     {
         posX += 1;
     }
 
-    if (Key.keyState[KEY_INPUT_S] == 1 && posY <= (4 - pieceSize[pieceNum][1]))
+    if (Key.keyState[KEY_INPUT_S] == 1 && posY <= ((fieldSizeY - 1) - PieceSize(pieceNum, 0)))
     {
         posY += 1;
     }
@@ -316,20 +363,21 @@ void koko::PieceMove()
     }
 
     // ピースが画面外にはみ出したら修正
-    if (posX + pieceSize[pieceNum][0] >= 6)
+    if (posX + PieceSize(pieceNum, 1) >= fieldSizeX + 1)
     {
-        posX = 5 - pieceSize[pieceNum][0];
+        posX = fieldSizeX - PieceSize(pieceNum, 1);
         Debug("おい、Xはみ出したぞ");
     }
-    if (posY + pieceSize[pieceNum][1] >= 6)
+    if (posY + PieceSize(pieceNum, 0) >= fieldSizeY + 1)
     {
-        posY = 5 - pieceSize[pieceNum][1];
+        posY = fieldSizeY - PieceSize(pieceNum, 0);
         Debug("おい、Yはみ出したぞ");
     }
 }
 
+// ピースを左下へ移動
 void koko::PiecePosReset()
 {
     posX = 0;
-    posY = 5 - pieceSize[pieceNum][1];
+    posY = fieldSizeY - PieceSize(pieceNum, 0);
 }

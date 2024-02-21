@@ -1,5 +1,6 @@
 #pragma once
 #include "DxLib.h"
+#include "Piece.h"
 #include <string>
 using namespace std;
 
@@ -8,7 +9,11 @@ class koko
 private:
 public:
     
+    // デバッグ用string変数
     string debug;
+
+    static const int fieldSizeY = 5;
+    static const int fieldSizeX = 5;
 
 	// カーソル位置座標
 	int posX = 0, posY = 0;
@@ -16,12 +21,16 @@ public:
 	// スコア
 	int score = 0;
 
+    // レベル
     int level = 0;
 
-    int boxHandle[7];
+    // 選択中のピース
+    int pieceNum = 0;
+
+    int boxHandle[7] = {0, 0, 0, 0, 0, 0, 0};
 
     // 盤面配列
-    int field[5][5] =
+    int field[fieldSizeY][fieldSizeX] =
     {
         {0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0},
@@ -31,7 +40,7 @@ public:
     };
 
     // 表示用配列
-    int dispField[5][5] =
+    int dispField[fieldSizeY][fieldSizeX] =
     {
         {0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0},
@@ -40,9 +49,7 @@ public:
         {0, 0, 0, 0, 0}
     };
 
-    int pieceNum = 0;
-
-    int plPiece[5][5] =
+    int plPiece[fieldSizeY][fieldSizeX] =
     {
         {0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0},
@@ -51,7 +58,7 @@ public:
         {0, 0, 0, 0, 0}
     };
 
-    int pieceData[3][5][5] =
+    int pieceData[3][fieldSizeY][fieldSizeX] =
     {
         {
         {1, 0, 0, 0, 0},
@@ -78,13 +85,6 @@ public:
         }
     };
 
-    int pieceSize[3][2]
-    {
-        {1, 1},
-        {2, 2},
-        {4, 1}
-    };
-
 	koko();
 
     void Debug(string str);
@@ -92,12 +92,12 @@ public:
 	void Init();
 	void Update();
 
-	void ArrayZero(int array[5][5]);
-    void ArrayDemoDisp(int array[5][5], int posX, int posY);
-    void ArrayDisp(int array[5][5], int posX, int posY);
-	void ArrayCopy(int fromArray[5][5], int toArray[5][5]);
-    void ArrayAdd(int fromArray[5][5], int toArray[5][5], int offsetX, int offsetY);
-    void ArrayMul(int array[5][5], int value);
+	void ArrayZero(int array[fieldSizeY][fieldSizeX]);
+    void ArrayDemoDisp(int array[fieldSizeY][fieldSizeX], int posX, int posY);
+    void ArrayDisp(int array[fieldSizeY][fieldSizeX], int posX, int posY);
+	void ArrayCopy(int fromArray[fieldSizeY][fieldSizeX], int toArray[fieldSizeY][fieldSizeX]);
+    void ArrayAdd(int fromArray[fieldSizeY][fieldSizeX], int toArray[fieldSizeY][fieldSizeX], int offsetX, int offsetY);
+    void ArrayMul(int array[fieldSizeY][fieldSizeX], int value);
 
     bool SetCheck();
     void PieceSet();
@@ -105,6 +105,7 @@ public:
 	void HorizonCheck();
     void LineDown(int line);
 
+    int PieceSize(int num, int YorX);
     void PieceMove();
     void PiecePosReset();
 };

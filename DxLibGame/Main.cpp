@@ -39,7 +39,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         gKoko.Init();
 
-        sceneNum = 4;
+        sceneNum = 2;
         setBottum = 0;
 
         spriteHandle = LoadGraph("Sprite/test.PNG");
