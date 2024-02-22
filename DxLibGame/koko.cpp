@@ -13,8 +13,6 @@ void koko::Debug(string str)
 
 void koko::Init()
 {
-    level = 0;
-
     boxHandle[0] = LoadGraph("Sprite/box0.PNG");
     boxHandle[1] = LoadGraph("Sprite/box1.PNG");
     boxHandle[2] = LoadGraph("Sprite/box2.PNG");
@@ -23,16 +21,66 @@ void koko::Init()
     boxHandle[5] = LoadGraph("Sprite/box5.PNG");
     boxHandle[6] = LoadGraph("Sprite/box6.PNG");
 
+    level = 0;
+
     pieceNum = 0;
 
     PiecePosReset();
 
+    isPlayer = false;
+
     Debug("デバッグ文↓");
 }
 
-void koko::Update()
+void koko::Update(int posX, int posY)
+{
+    // 表示用配列初期化
+    ArrayZero(dispField);
+
+    // 盤面をコピー
+    ArrayCopy(field, dispField);
+
+    // バーをコピー
+    LevelLine(level);
+
+    if (isPlayer)
+    {
+        PlayerUpdate();
+    }
+
+    // 横一列並んだら消す
+    HorizonCheck();
+
+    // 配列描画
+    ArrayDisp(dispField, posX, posY);
+}
+
+void koko::PlayerUpdate()
+{
+    // ピース移動
+    PieceMove();
+
+    // ピース表示
+    ArrayCopy(pieceData[pieceNum], plPiece);
+    ArrayMul(plPiece, 2);
+    ArrayAdd(plPiece, dispField, posX, posY);
+
+    // ピース設置
+    if (Key.keyState[KEY_INPUT_P] == 1)
+    {
+        PieceSet();
+    }
+}
+
+void koko::TestUpdate()
 {
     PieceMove();
+
+    if (Key.keyState[KEY_INPUT_0] == 1)
+    {
+        if (isPlayer) { isPlayer = false; }
+        else { isPlayer = true; }
+    }
 
     // ピース変更
     if (Key.keyState[KEY_INPUT_0] == 1)
@@ -64,30 +112,32 @@ void koko::Update()
     // 表示用配列初期化
     ArrayZero(dispField);
 
-    // 表示用配列にコピー
+    // 盤面をコピー
     ArrayCopy(field, dispField);
 
-    // Playerピースを表示
+    // バーをコピー
+    LevelLine(level);
+
+    // Playerピースをコピー
     ArrayCopy(pieceData[pieceNum], plPiece);
     ArrayMul(plPiece, 2);
     ArrayAdd(plPiece, dispField, posX, posY);
 
-    // バー表示
-    LevelLine(level);
 
     // 現在位置にピースを配置　起動したらセットするように変えたbyより
     //PieceSet();
     if (Key.keyState[KEY_INPUT_P] == 1)
     {
-       // PieceSet();
+       PieceSet();
     }
 
     // 横一列並んだら消す
     HorizonCheck();
 
-    // 配列描画
-    ArrayDemoDisp(dispField, 100, 50);
+    // 仮配列描画
+    // ArrayDemoDisp(dispField, 100, 50);
 
+    // 配列描画
     ArrayDisp(dispField, 100, 150);
 
     // スコア描画
@@ -162,7 +212,7 @@ void koko::ArrayDisp(int array[fieldSizeY][fieldSizeX], int posX, int posY)
 }
 
 // 配列をコピー
-void koko::ArrayCopy(int fromArray[fieldSizeY][fieldSizeX], int toArray[5][5])
+void koko::ArrayCopy(int fromArray[fieldSizeY][fieldSizeX], int toArray[fieldSizeY][fieldSizeY])
 {
     for (int y = 0; y < fieldSizeY; y++)
     {
@@ -214,25 +264,25 @@ bool koko::SetCheck()
             }
         }
     }
+
+    if (!isPlayer) { return false; }
+
     return true;
 }
 
 // fieldにピースを配置
-bool koko::PieceSet()
+void koko::PieceSet()
 {
     // 現在位置にピースを配置
     if (SetCheck())
     {
         ArrayAdd(pieceData[pieceNum], field, posX, posY);
         Debug("せいこう");
-        return true;
     }
     else
     {
         Debug("おけないよーん");
-        return false;
     }
-    return false;
 }
 
 // 引数は0~5

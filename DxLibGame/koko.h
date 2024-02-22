@@ -18,6 +18,9 @@ public:
 	// カーソル位置座標
 	int posX = 0, posY = 0;
 
+    // プレイヤーオンオフ
+    bool isPlayer = false;
+
 	// スコア
 	int score = 0;
 
@@ -90,7 +93,9 @@ public:
     void Debug(string str);
 
 	void Init();
-	void Update();
+    void Update(int posX, int posY);
+    void PlayerUpdate();
+	void TestUpdate();
 
 	void ArrayZero(int array[fieldSizeY][fieldSizeX]);
     void ArrayDemoDisp(int array[fieldSizeY][fieldSizeX], int posX, int posY);
@@ -100,7 +105,7 @@ public:
     void ArrayMul(int array[fieldSizeY][fieldSizeX], int value);
 
     bool SetCheck();
-    bool PieceSet();
+    void PieceSet();
     void LevelLine(int level);
 	void HorizonCheck();
     void LineDown(int line);

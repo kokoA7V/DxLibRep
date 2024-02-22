@@ -95,13 +95,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             }
 
             // ここからパズル盤面プログラム
-            gKoko.Update();
+            gKoko.TestUpdate();
 
         break;
         // 統合デバッグシーン
         case 3:
             turnMng.Update();
-            gKoko.Update();
+            gKoko.TestUpdate();
             break;
         case 4:
             // タイトル画面

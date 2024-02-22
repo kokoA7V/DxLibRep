@@ -85,6 +85,9 @@ void TurnMng::Update(){
 		DispHands();
 
 		DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", nowHands);
+
+		// kokoアップデートをココへ移動 by koko
+		gKoko.Update(0, 0);
 		
 		// パズルモードと手札選択モード切り替え
 		switch (mode)
@@ -103,11 +106,11 @@ void TurnMng::Update(){
 			break;
 		case pazzle:
 			
-			gKoko.Update();
+			gKoko.isPlayer = true;
+			// gKoko.Update();
 			if (Key.keyState[KEY_INPUT_P] == 1)
 			{
-				
-				if (gKoko.PieceSet())
+				if (gKoko.SetCheck())
 				{
 					pow += hands[setHand];
 					hands[setHand] = 0;
