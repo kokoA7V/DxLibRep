@@ -9,7 +9,7 @@
 //
 
 // 現在シーン
-// 0:なし
+// 0:シーン選択
 // 1:よりまーデバッグ用
 // 2:ここデバッグ用
 // 3:統合デバッグ用
@@ -39,7 +39,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         gKoko.Init();
 
-        sceneNum = 2;
+        sceneNum = 0;
         setBottum = 0;
 
         spriteHandle = LoadGraph("Sprite/test.PNG");
@@ -59,6 +59,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         switch (sceneNum)
         {
         case 0:
+             // シーン選択
+            DrawFormatString(200, 100, GetColor(255, 255, 255), "1 KEY よりしーん");
+            DrawFormatString(200, 130, GetColor(255, 255, 255), "2 KEY たけるしーん");
+            DrawFormatString(200, 160, GetColor(255, 255, 255), "3 KEY とうごうしーん");
+            DrawFormatString(200, 190, GetColor(255, 255, 255), "4 KEY たいとるしーん");
+
+            if (Key.keyState[KEY_INPUT_1] == 1)sceneNum = 1;
+            if (Key.keyState[KEY_INPUT_2] == 1)sceneNum = 2;
+            if (Key.keyState[KEY_INPUT_3] == 1)sceneNum = 3;
+            if (Key.keyState[KEY_INPUT_4] == 1)sceneNum = 4;
             break;
 
         case 1:
