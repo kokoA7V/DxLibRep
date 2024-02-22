@@ -79,7 +79,7 @@ void koko::Update()
     //PieceSet();
     if (Key.keyState[KEY_INPUT_P] == 1)
     {
-        PieceSet();
+       // PieceSet();
     }
 
     // 横一列並んだら消す
@@ -218,19 +218,21 @@ bool koko::SetCheck()
 }
 
 // fieldにピースを配置
-void koko::PieceSet()
+bool koko::PieceSet()
 {
     // 現在位置にピースを配置
     if (SetCheck())
     {
         ArrayAdd(pieceData[pieceNum], field, posX, posY);
         Debug("せいこう");
+        return true;
     }
     else
     {
         Debug("おけないよーん");
+        return false;
     }
-   
+    return false;
 }
 
 // 引数は0~5

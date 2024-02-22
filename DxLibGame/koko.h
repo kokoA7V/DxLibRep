@@ -100,7 +100,7 @@ public:
     void ArrayMul(int array[fieldSizeY][fieldSizeX], int value);
 
     bool SetCheck();
-    void PieceSet();
+    bool PieceSet();
     void LevelLine(int level);
 	void HorizonCheck();
     void LineDown(int line);

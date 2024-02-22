@@ -72,7 +72,7 @@ void TurnMng::Update(){
 	case main:
 		// メインフェイズ処理
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "MainPhase\nスペースで切り替え\n");
-		if (mode==pazzle)
+		if (mode == pazzle)
 		{
 			DrawFormatString(400, 70, GetColor(255, 255, 255), "パズルモード");
 		}
@@ -96,23 +96,31 @@ void TurnMng::Update(){
 			SelectHand();
 
 			// カードの選択へモードチェンジ
-			if (Key.keyState[KEY_INPUT_P] == 1)
+			if (Key.keyState[KEY_INPUT_SPACE] == 1)
 			{
 				mode++;
 			}
 			break;
 		case pazzle:
 			
-			gKoko.PieceMove();
-			if (Key.keyState[KEY_INPUT_SPACE] == 1)
+			gKoko.Update();
+			if (Key.keyState[KEY_INPUT_P] == 1)
 			{
-				gKoko.PieceSet();
-				pow += hands[setHand];
-				hands[setHand] = 0;
-				HowManyHands();
-				mode = 0;
+				
+				if (gKoko.PieceSet())
+				{
+					pow += hands[setHand];
+					hands[setHand] = 0;
+					HowManyHands();
+					mode = 0;
+				}
+				else
+				{
+					DrawFormatString(400, 200, GetColor(255, 255, 255), "オケナイ！");
+				}
+				
 			}
-			if (Key.keyState[KEY_INPUT_ESCAPE] == 1)
+			if (Key.keyState[KEY_INPUT_SPACE] == 1)
 			{
 				mode = 0;
 			}
