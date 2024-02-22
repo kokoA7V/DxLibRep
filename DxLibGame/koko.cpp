@@ -65,11 +65,6 @@ void koko::PlayerUpdate()
     ArrayMul(plPiece, 2);
     ArrayAdd(plPiece, dispField, posX, posY);
 
-    // ピース設置
-    if (Key.keyState[KEY_INPUT_P] == 1)
-    {
-        PieceSet();
-    }
 }
 
 void koko::TestUpdate()

@@ -101,17 +101,20 @@ void TurnMng::Update(){
 			// カードの選択へモードチェンジ
 			if (Key.keyState[KEY_INPUT_SPACE] == 1)
 			{
+				gKoko.isPlayer = true;
 				mode++;
 			}
 			break;
 		case pazzle:
 			
-			gKoko.isPlayer = true;
+			
 			// gKoko.Update();
-			if (Key.keyState[KEY_INPUT_P] == 1)
+			if (Key.keyState[KEY_INPUT_LSHIFT] == 1)
 			{
 				if (gKoko.SetCheck())
 				{
+					gKoko.PieceSet();
+					gKoko.isPlayer = false;
 					pow += hands[setHand];
 					hands[setHand] = 0;
 					HowManyHands();
@@ -125,6 +128,7 @@ void TurnMng::Update(){
 			}
 			if (Key.keyState[KEY_INPUT_SPACE] == 1)
 			{
+				gKoko.isPlayer = false;
 				mode = 0;
 			}
 			break;
