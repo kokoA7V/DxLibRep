@@ -10,13 +10,16 @@ public:
     int maxHand = 5;
 	
 	// 手札の枚数
-	int nowHands = 0;
+	int nowHandsPl1 = 0;
+	int nowHandsPl2 = 0;
 	
 	// 使おうとしてるカード
-	int setHand = 0;
+	int setHandPl1 = 0;
+	int setHandPl2 = 0;
 	
 	// 手札
-	int hands[5] = {0,0,0,0,0};
+	int handsPl1[5] = {0,0,0,0,0};
+	int handsPl2[5] = {0,0,0,0,0};
 	
 	// 与えるダメージ(仮)
 	int pow = 0;
@@ -59,8 +62,10 @@ public:
 	void HandZeroGo();
 	
 	//  手札を表示させる
-	void DispHands();
+	void DispHandsPl1(int posX);
+	void DispHandsPl2(int posX);
 	
 	// 手札を選択する
-	void SelectHand();
+	void SelectHandPl1();
+	void SelectHandPl2();
 };

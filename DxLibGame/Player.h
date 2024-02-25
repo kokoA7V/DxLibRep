@@ -8,5 +8,5 @@ public :
 	int nowHp = 20;
 
 	void Update();
-
+	void HPDisp(int posX);
 };

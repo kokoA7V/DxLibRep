@@ -3,14 +3,27 @@
 #include "CardGene.h"
 #include "KeyMng.h"
 #include "koko.h"
+#include "Player.h"
 
 TurnMng::TurnMng(){}
-
+Player player;
+Player player2;
+koko kokoPl1;
+koko kokoPl;
 void TurnMng::Update(){	
-
+	
 	// デバック用のpow表示
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "DEBUG:POW %d", pow);
 	
+	gKoko.Update(100, 80);
+	gKoko.Update(800, 80);
+
+	// 手札表示
+	DispHandsPl1(0);
+	DispHandsPl2(700);
+
+	player.HPDisp(0);
+	player2.HPDisp(200);
 	switch (phaseNo)
 	{
 	case start:
@@ -20,10 +33,14 @@ void TurnMng::Update(){
 		HandZeroGo();
 
 		// ハンドを数える
-		nowHands = HowManyHands();
+		nowHandsPl1 = HowManyHands();
 		
-		DrawFormatString(400, 10, GetColor(255, 255, 255), "StartPhase : nowHands%d", nowHands);
-		
+		DrawFormatString(400, 10, GetColor(255, 255, 255), "StartPhase : nowHands%d", nowHandsPl1);
+		if (Key.keyState[KEY_INPUT_SPACE] == 1)
+		{
+			player2.nowHp--;
+		}
+		DrawFormatString(800, 10, GetColor(255, 255, 255), "nowHP%d", player2.nowHp);
 		NextPhase();
 		break;
 		
@@ -43,16 +60,29 @@ void TurnMng::Update(){
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "DrowPhase");
 		
 		// カードを五枚になるように引く
-		for (nowHands; nowHands < maxHand; )
+		for (nowHandsPl1; nowHandsPl1 < maxHand; )
 		{
-			if (hands[nowHands] <= 0)
+			if (handsPl1[nowHandsPl1] <= 0)
 			{
 				int hand = DeckGene.hand_card();
-				hands[nowHands] = hand;	
+				handsPl1[nowHandsPl1] = hand;	
 			}
 			else
 			{
-				nowHands++;
+				nowHandsPl1++;
+			}
+
+		}
+		for (nowHandsPl2; nowHandsPl2 < maxHand; )
+		{
+			if (handsPl2[nowHandsPl2] <= 0)
+			{
+				int hand = DeckGene.hand_card();
+				handsPl2[nowHandsPl2] = hand;
+			}
+			else
+			{
+				nowHandsPl2++;
 			}
 		}
 		
@@ -81,13 +111,11 @@ void TurnMng::Update(){
 			DrawFormatString(400, 70, GetColor(255, 255, 255), "カード選択モード");
 		}
 		
-		// 手札表示
-		DispHands();
 
-		DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", nowHands);
 
-		// kokoアップデートをココへ移動 by koko
-		gKoko.Update(0, 0);
+		DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", nowHandsPl1);
+
+
 		
 		// パズルモードと手札選択モード切り替え
 		switch (mode)
@@ -96,7 +124,7 @@ void TurnMng::Update(){
 						
 
 			// カード選択
-			SelectHand();
+			SelectHandPl1();
 
 			// カードの選択へモードチェンジ
 			if (Key.keyState[KEY_INPUT_SPACE] == 1)
@@ -115,8 +143,8 @@ void TurnMng::Update(){
 				{
 					gKoko.PieceSet();
 					gKoko.isPlayer = false;
-					pow += hands[setHand];
-					hands[setHand] = 0;
+					pow += handsPl1[setHandPl1];
+					handsPl1[setHandPl1] = 0;
 					HowManyHands();
 					mode = 0;
 				}
@@ -143,16 +171,14 @@ void TurnMng::Update(){
 		//手札を捨てる
 
 		// カード選択
-		SelectHand();
+		SelectHandPl1();
 
 		if (Key.keyState[KEY_INPUT_SPACE] == 1)
 		{
-			hands[setHand] = 0;
+			handsPl1[setHandPl1] = 0;
 			HowManyHands();
 		}
 
-		// 手札表示
-		DispHands();
 		
 		NextPhase();
 		break;
@@ -174,7 +200,7 @@ int TurnMng::HowManyHands() {
 	int manyHands = 0;
 	for (int i = 0; i < maxHand; ++i)
 	{
-		if (hands[i] > 0)
+		if (handsPl1[i] > 0)
 		{
 			manyHands++;
 		}
@@ -184,15 +210,15 @@ int TurnMng::HowManyHands() {
 
 // 数字を前に詰める
 void TurnMng::CloseToTheFront(int line) {
-	hands[line - 1] = hands[line];
-	hands[line] = 0;
+	handsPl1[line - 1] = handsPl1[line];
+	handsPl1[line] = 0;
 }
 
 // 0があったら数字を前に詰めるスクリプトを起動
 void TurnMng::HandZeroGo(){
 	for (int i = 0; i < maxHand - 1; ++i)
 	{
-		if (hands[i] == 0)
+		if (handsPl1[i] == 0)
 		{
 			CloseToTheFront(i + 1);
 		}
@@ -200,48 +226,93 @@ void TurnMng::HandZeroGo(){
 }
 
 // 手札を表示させる
-void TurnMng::DispHands() {
-	DrawFormatString(400, 400, GetColor(255, 255, 255), "setHands %d", hands[setHand]);
+void TurnMng::DispHandsPl1(int posX) {
+	DrawFormatString(400, 400, GetColor(255, 255, 255), "setHands %d", handsPl1[setHandPl1]);
 
-	for (int i = 0; i < nowHands; i++)
+	for (int i = 0; i < nowHandsPl1; i++)
 	{
 		// 選択してるなら文字を赤色に
-		if (setHand == i)
+		if (setHandPl1 == i)
 		{
-			DrawFormatString(i * 100 + 50, 300, GetColor(255, 0, 0), "攻撃力 %d", hands[i]);
-			DrawFormatString(i * 100 + 50, 350, GetColor(255, 0, 0), "番号 %d", i);
+			DrawFormatString(i * 100 + 50 + posX, 500, GetColor(255, 0, 0), "攻撃力 %d", handsPl1[i]);
+			DrawFormatString(i * 100 + 50 + posX, 550, GetColor(255, 0, 0), "番号 %d", i);
 		}
 		else
 		{
-			DrawFormatString(i * 100 + 50, 300, GetColor(255, 255, 255), "攻撃力 %d", hands[i]);
-			DrawFormatString(i * 100 + 50, 350, GetColor(255, 255, 255), "番号 %d", i);
+			DrawFormatString(i * 100 + 50 + posX, 500, GetColor(255, 255, 255), "攻撃力 %d", handsPl1[i]);
+			DrawFormatString(i * 100 + 50 + posX, 550, GetColor(255, 255, 255), "番号 %d", i);
+		}
+	}
+}
+
+void TurnMng::DispHandsPl2(int posX) {
+	DrawFormatString(400, 400, GetColor(255, 255, 255), "setHands %d", handsPl2[setHandPl2]);
+
+	for (int i = 0; i < nowHandsPl2; i++)
+	{
+		// 選択してるなら文字を赤色に
+		if (setHandPl2 == i)
+		{
+			DrawFormatString(i * 100 + 50 + posX, 500, GetColor(255, 0, 0), "攻撃力 %d", handsPl2[i]);
+			DrawFormatString(i * 100 + 50 + posX, 550, GetColor(255, 0, 0), "番号 %d", i);
+		}
+		else
+		{
+			DrawFormatString(i * 100 + 50 + posX, 500, GetColor(255, 255, 255), "攻撃力 %d", handsPl2[i]);
+			DrawFormatString(i * 100 + 50 + posX, 550, GetColor(255, 255, 255), "番号 %d", i);
 		}
 	}
 }
 
 // カード選択
-void TurnMng::SelectHand() {
+void TurnMng::SelectHandPl1() {
 	if (Key.keyState[KEY_INPUT_D] == 1)
 	{
-		if (setHand < maxHand - 1)
+		if (setHandPl1 < maxHand - 1)
 		{
-			setHand++;
+			setHandPl1++;
 		}
 		else
 		{
-			setHand = 0;
+			setHandPl1 = 0;
 		}
 	}
 
 	if (Key.keyState[KEY_INPUT_A] == 1)
 	{
-		if (setHand > 0)
+		if (setHandPl1 > 0)
 		{
-			setHand--;
+			setHandPl1--;
 		}
 		else
 		{
-			setHand = 4;
+			setHandPl1 = 4;
+		}
+	}
+}
+
+void TurnMng::SelectHandPl2() {
+	if (Key.keyState[KEY_INPUT_RIGHT] == 1)
+	{
+		if (setHandPl2 < maxHand - 1)
+		{
+			setHandPl2++;
+		}
+		else
+		{
+			setHandPl2 = 0;
+		}
+	}
+
+	if (Key.keyState[KEY_INPUT_LEFT] == 1)
+	{
+		if (setHandPl2 > 0)
+		{
+			setHandPl2--;
+		}
+		else
+		{
+			setHandPl2 = 4;
 		}
 	}
 }
