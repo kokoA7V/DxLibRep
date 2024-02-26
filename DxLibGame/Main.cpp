@@ -38,14 +38,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     //Ç±Ç±Ç≈âÊëúÅEâπÇì«Ç›çûÇ›
     {
         gKoko.Init();
-
+        turnMng.Init();
         sceneNum = 0;
         setBottum = 0;
 
-        spriteHandle = LoadGraph("Sprite/test.PNG");
-        spriteHandle2 = LoadGraph("Sprite/test2.PNG");
+        // spriteHandle = LoadGraph("Sprite/test.PNG");
+        // spriteHandle2 = LoadGraph("Sprite/test2.PNG");
 
-        soundHandle = LoadSoundMem("Sound/Twinfield - Kabedon.mp3");        
+        // soundHandle = LoadSoundMem("Sound/Twinfield - Kabedon.mp3");        
     }
 
     while (ProcessMessage() == 0)

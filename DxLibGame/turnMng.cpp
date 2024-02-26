@@ -6,17 +6,23 @@
 #include "Player.h"
 
 TurnMng::TurnMng(){}
+
 Player player;
 Player player2;
 koko kokoPl1;
-koko kokoPl;
+koko kokoPl2;
+
+void TurnMng::Init() {
+	kokoPl1.Init();
+	kokoPl2.Init();
+}
 void TurnMng::Update(){	
 	
 	// デバック用のpow表示
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "DEBUG:POW %d", pow);
 	
-	gKoko.Update(100, 80);
-	gKoko.Update(800, 80);
+	kokoPl1.Update(100, 80);
+	kokoPl2.Update(800, 80);
 
 	// 手札表示
 	DispHandsPl1(0);

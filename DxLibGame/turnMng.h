@@ -68,4 +68,6 @@ public:
 	// ŽèŽD‚ð‘I‘ð‚·‚é
 	void SelectHandPl1();
 	void SelectHandPl2();
+
+	void Init();
 };
