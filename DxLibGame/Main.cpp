@@ -3,6 +3,7 @@
 #include "KeyMng.h"
 #include "koko.h"
 #include "TurnMng.h"
+#include "ResourceMng.h"
 
 //
 //ここで変数を用意
@@ -18,8 +19,6 @@ int sceneNum = 0;
 // スプライトハンドル
 int spriteHandle;
 int spriteHandle2;
-
-int testBox[7];
 
 int setBottum = 0;
 
@@ -39,6 +38,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         gKoko.Init();
         turnMng.Init();
+        rm.Init();
+
         sceneNum = 0;
         setBottum = 0;
 
@@ -54,6 +55,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         SetDrawScreen(DX_SCREEN_BACK);//描画先を裏画面に
 
         Key.Update();//キー入力状態を更新する
+
+        DrawGraph(0, 0, rm.boxHandle[0], 0);
 
         //ここに毎フレーム呼ぶ処理を書く
         switch (sceneNum)
