@@ -64,7 +64,6 @@ void TurnMng::Update(){
 		break;
 		
 	case drow:
-		pow = 0;
 		// ドローフェイズ処理
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "DrowPhase");
 		
@@ -90,6 +89,14 @@ void TurnMng::Update(){
 	case main:
 		// メインフェイズ処理
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "MainPhase\nスペースで切り替え\n");
+		if (mode == pazzle)
+		{
+			DrawFormatString(400, 70, GetColor(255, 255, 255), "パズルモード");
+		}
+		else
+		{
+			DrawFormatString(400, 70, GetColor(255, 255, 255), "カード選択モード");
+		}
 		if (battingfirst)CardPlayPl1();
 		else CardPlayPl2();
 		
@@ -140,16 +147,6 @@ void TurnMng::NextPhase() {
 
 void TurnMng::CardPlayPl1() 
 {
-	DrawFormatString(400, 10, GetColor(255, 255, 255), "MainPhase\nスペースで切り替え\n");
-	if (mode == pazzle)
-	{
-		DrawFormatString(400, 70, GetColor(255, 255, 255), "パズルモード");
-	}
-	else
-	{
-		DrawFormatString(400, 70, GetColor(255, 255, 255), "カード選択モード");
-	}
-
 	DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", player.nowHands);
 
 	// パズルモードと手札選択モード切り替え
@@ -197,16 +194,6 @@ void TurnMng::CardPlayPl1()
 
 void TurnMng::CardPlayPl2()
 {
-	DrawFormatString(400, 10, GetColor(255, 255, 255), "MainPhase\nスペースで切り替え\n");
-	if (mode == pazzle)
-	{
-		DrawFormatString(400, 70, GetColor(255, 255, 255), "パズルモード");
-	}
-	else
-	{
-		DrawFormatString(400, 70, GetColor(255, 255, 255), "カード選択モード");
-	}
-
 	DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", player2.nowHands);
 
 	// パズルモードと手札選択モード切り替え
