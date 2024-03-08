@@ -56,7 +56,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         Key.Update();//キー入力状態を更新する
 
-        DrawGraph(0, 0, rm.boxHandle[0], 0);
+        DrawGraph(0, 0, rm.backGround, 0);
 
         //ここに毎フレーム呼ぶ処理を書く
         switch (sceneNum)
