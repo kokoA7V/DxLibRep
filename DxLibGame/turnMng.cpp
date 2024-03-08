@@ -1,5 +1,5 @@
 #include <DxLib.h>
-#include "turnMng.h"
+#include "TurnMng.h"
 #include "CardGene.h"
 #include "KeyMng.h"
 #include "koko.h"
@@ -19,8 +19,7 @@ void TurnMng::Init() {
 void TurnMng::Update(){	
 	
 	// デバック用のpow表示
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "DEBUG:POW %d", pow);
-	
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "DEBUG:POW %d", pow);	
 
 	// パズル表示
 	kokoPl1.Update(100, 80);
@@ -46,10 +45,6 @@ void TurnMng::Update(){
 		player2.nowHands = player2.HowManyHands();
 		
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "StartPhase : nowHands%d",player.nowHands);
-		if (Key.keyState[KEY_INPUT_SPACE] == 1)
-		{
-			player2.nowHp--;
-		}
 		DrawFormatString(800, 10, GetColor(255, 255, 255), "nowHP%d", player2.nowHp);
 		NextPhase();
 		break;
@@ -59,19 +54,22 @@ void TurnMng::Update(){
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "AttackPhase");
 		
 		// 自分の持ってるカードの合計攻撃力分相手にダメージを与える	
-		DrawFormatString(200, 0, GetColor(255, 255, 255), "%d",pow,"ダメージを与えた！！");
+		if (battingfirst)
+		{
+			DrawFormatString(200, 0, GetColor(255, 255, 255), "%d", pow, "ダメージを与えた！！");
+		}
+		
 		
 		NextPhase();
 		break;
 		
 	case drow:
-		pow = 0;
 		// ドローフェイズ処理
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "DrowPhase");
 		
 		// カードを五枚になるように引く
-		player.Draw();
-		player2.Draw();
+		if (battingfirst) player.Draw();
+		else player2.Draw();	
 		
 		NextPhase();
 		break;
@@ -81,7 +79,9 @@ void TurnMng::Update(){
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "LevelUpPhase");
 		
 		// パズルのレーン増える
-		kokoPl1.level++;
+		if (battingfirst)kokoPl1.level++;
+		else kokoPl2.level++;
+		
 		
 		phaseNo++;
 		//NextPhase();
@@ -97,50 +97,8 @@ void TurnMng::Update(){
 		{
 			DrawFormatString(400, 70, GetColor(255, 255, 255), "カード選択モード");
 		}
-
-		DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", player.nowHands);
-		
-		// パズルモードと手札選択モード切り替え
-		switch (mode)
-		{
-		case cardSelect:						
-
-			// カード選択
-			player.SelectHandPl1();
-
-			// カードの選択へモードチェンジ
-			if (Key.keyState[KEY_INPUT_SPACE] == 1)
-			{
-				kokoPl1.isPlayer = true;
-				mode++;
-			}
-			break;
-		case pazzle:			
-			
-			if (Key.keyState[KEY_INPUT_LSHIFT] == 1)
-			{
-				if (kokoPl1.SetCheck())
-				{
-					kokoPl1.PieceSet();
-					kokoPl1.isPlayer = false;
-					pow += player.hands[player.setHand];
-					player.hands[player.setHand] = 0;
-					player.HowManyHands();
-					mode = 0;
-				}
-				else
-				{
-					DrawFormatString(400, 200, GetColor(255, 255, 255), "オケナイ！");
-				}
-				
-			}
-			if (Key.keyState[KEY_INPUT_SPACE] == 1)
-			{
-				kokoPl1.isPlayer = false;
-				mode = 0;
-			}
-			break;
-		}
+		if (battingfirst)CardPlayPl1();
+		else CardPlayPl2();
 		
 		NextPhase();
 		break;
@@ -156,7 +114,7 @@ void TurnMng::Update(){
 		if (Key.keyState[KEY_INPUT_SPACE] == 1)
 		{
 			player.hands[player.setHand] = 0;
-			player.HowManyHands();
+			player.nowHands = player.HowManyHands();
 		}
 		
 		NextPhase();
@@ -164,6 +122,14 @@ void TurnMng::Update(){
 	case end:
 		DrawFormatString(400, 10, GetColor(255, 255, 255), "EndPhase");
 		// ターンエンド処理
+		if (battingfirst)
+		{
+			battingfirst = false;
+		}
+		else
+		{
+			battingfirst = true;
+		}
 		phaseNo = 0;
 		break;
 	}
@@ -176,5 +142,99 @@ void TurnMng::NextPhase() {
 		kokoPl1.isPlayer = false;
 		kokoPl2.isPlayer = false;
 		mode = 0;
+	}
+}
+
+void TurnMng::CardPlayPl1() 
+{
+	DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", player.nowHands);
+
+	// パズルモードと手札選択モード切り替え
+	switch (mode)
+	{
+	case cardSelect:
+
+		// カード選択
+		player.SelectHandPl1();
+
+		// カードの選択へモードチェンジ
+		if (Key.keyState[KEY_INPUT_SPACE] == 1)
+		{
+			kokoPl1.isPlayer = true;
+			mode++;
+		}
+		break;
+	case pazzle:
+
+		if (Key.keyState[KEY_INPUT_LSHIFT] == 1)
+		{
+			if (kokoPl1.SetCheck())
+			{
+				kokoPl1.PieceSet();
+				kokoPl1.isPlayer = false;
+				pow += player.hands[player.setHand];
+				player.hands[player.setHand] = 0;
+				player.HowManyHands();
+				mode = 0;
+			}
+			else
+			{
+				DrawFormatString(400, 200, GetColor(255, 255, 255), "オケナイ！");
+			}
+
+		}
+		if (Key.keyState[KEY_INPUT_SPACE] == 1)
+		{
+			kokoPl1.isPlayer = false;
+			mode = 0;
+		}
+		break;
+	}
+}
+
+void TurnMng::CardPlayPl2()
+{
+	DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", player2.nowHands);
+
+	// パズルモードと手札選択モード切り替え
+	switch (mode)
+	{
+	case cardSelect:
+
+		// カード選択
+		player2.SelectHandPl2();
+
+		// カードの選択へモードチェンジ
+		if (Key.keyState[KEY_INPUT_SPACE] == 1)
+		{
+			kokoPl2.isPlayer = true;
+			mode++;
+		}
+		break;
+	case pazzle:
+
+		if (Key.keyState[KEY_INPUT_RSHIFT] == 1)
+		{
+			if (kokoPl2.SetCheck())
+			{
+				kokoPl2.PieceSet();
+				kokoPl2.isPlayer = false;
+				pow += player2.hands[player2.setHand];
+				player2.hands[player2.setHand] = 0;
+				player2.HowManyHands();
+				mode = 0;
+			}
+			else
+			{
+				DrawFormatString(400, 200, GetColor(255, 255, 255), "オケナイ！");
+			}
+
+		}
+		if (Key.keyState[KEY_INPUT_SPACE] == 1)
+		{
+			kokoPl2.isPlayer = false;
+			mode = 0;
+		}
+		break;
 	}
 }
