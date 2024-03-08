@@ -3,6 +3,7 @@
 #include "KeyMng.h"
 #include "koko.h"
 #include "turnMng.h"
+#include "ResourceMng.h"
 
 //
 //ここで変数を用意
@@ -13,18 +14,10 @@
 // 1:よりまーデバッグ用
 // 2:ここデバッグ用
 // 3:統合デバッグ用
+// 4:仮本体
 int sceneNum = 0;
 
-// スプライトハンドル
-int spriteHandle;
-int spriteHandle2;
-
-int testBox[7];
-
 int setBottum = 0;
-
-// サウンドハンドル
-int soundHandle;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -39,13 +32,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         gKoko.Init();
         turnMng.Init();
+        rm.Init();
+
         sceneNum = 0;
-        setBottum = 0;
-
-        // spriteHandle = LoadGraph("Sprite/test.PNG");
-        // spriteHandle2 = LoadGraph("Sprite/test2.PNG");
-
-        // soundHandle = LoadSoundMem("Sound/Twinfield - Kabedon.mp3");        
+        setBottum = 0;     
     }
 
     while (ProcessMessage() == 0)
@@ -54,6 +44,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         SetDrawScreen(DX_SCREEN_BACK);//描画先を裏画面に
 
         Key.Update();//キー入力状態を更新する
+
+        DrawGraph (0, 0, rm.backGround, 0);
 
         //ここに毎フレーム呼ぶ処理を書く
         switch (sceneNum)
@@ -79,20 +71,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             DrawFormatString(200, 100, GetColor(255, 255, 255), "Z KEY %d", Key.keyState[KEY_INPUT_Z]);
             DrawFormatString(200, 120, GetColor(255, 255, 255), "X KEY %d", Key.keyState[KEY_INPUT_X]);
 
-            DrawGraph(0, 0, spriteHandle, 0);//描画
-            DrawGraph(0, 64, spriteHandle2, 0);//描画
+            //// 音楽再生
+            //if (Key.keyState[KEY_INPUT_Z] == 1)
+            //{
+            //    PlaySoundMem(soundHandle, DX_PLAYTYPE_BACK);
+            //}
 
-            // 音楽再生
-            if (Key.keyState[KEY_INPUT_Z] == 1)
-            {
-                PlaySoundMem(soundHandle, DX_PLAYTYPE_BACK);
-            }
-
-            // 音楽停止
-            if (Key.keyState[KEY_INPUT_X] == 1)
-            {
-                StopSoundMem(soundHandle);
-            }
+            //// 音楽停止
+            //if (Key.keyState[KEY_INPUT_X] == 1)
+            //{
+            //    StopSoundMem(soundHandle);
+            //}
 
             // ここからパズル盤面プログラム
             gKoko.TestUpdate();

@@ -1,8 +1,10 @@
 
 #include "koko.h"
 #include "KeyMng.h"
+#include "ResourceMng.h"
 
 koko gKoko;
+ResourceMng rm;
 
 koko::koko() { }
 
@@ -13,13 +15,6 @@ void koko::Debug(string str)
 
 void koko::Init()
 {
-    boxHandle[0] = LoadGraph("Sprite/box0.PNG");
-    boxHandle[1] = LoadGraph("Sprite/box1.PNG");
-    boxHandle[2] = LoadGraph("Sprite/box2.PNG");
-    boxHandle[3] = LoadGraph("Sprite/box3.PNG");
-    boxHandle[4] = LoadGraph("Sprite/box4.PNG");
-    boxHandle[5] = LoadGraph("Sprite/box5.PNG");
-    boxHandle[6] = LoadGraph("Sprite/box6.PNG");
 
     level = 0;
 
@@ -188,7 +183,7 @@ void koko::ArrayDisp(int array[fieldSizeY][fieldSizeX], int posX, int posY)
                 (
                     posX + (x * space),
                     posY + (y * space),
-                    boxHandle[5],
+                    rm.boxHandle[5],
                     0
                 );
             }
@@ -198,7 +193,7 @@ void koko::ArrayDisp(int array[fieldSizeY][fieldSizeX], int posX, int posY)
                 (
                     posX + (x * space),
                     posY + (y * space),
-                    boxHandle[array[y][x]],
+                    rm.boxHandle[array[y][x]],
                     0
                 );
             }

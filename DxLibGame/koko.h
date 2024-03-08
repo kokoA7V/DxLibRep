@@ -30,8 +30,6 @@ public:
     // 選択中のピース
     int pieceNum = 0;
 
-    int boxHandle[7] = {0, 0, 0, 0, 0, 0, 0};
-
     // 盤面配列
     int field[fieldSizeY][fieldSizeX] =
     {
