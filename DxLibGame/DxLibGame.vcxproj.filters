@@ -24,7 +24,7 @@
     <ClCompile Include="KeyMng.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="turnMng.cpp">
+    <ClCompile Include="TurnMng.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
@@ -44,7 +44,7 @@
     <ClInclude Include="KeyMng.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="turnMng.h">
+    <ClInclude Include="TurnMng.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="card.h">

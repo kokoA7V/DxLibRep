@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "KeyMng.h"
 #include "koko.h"
-#include "turnMng.h"
+#include "TurnMng.h"
 
 //
 //‚±‚±‚Å•Ï”‚ğ—pˆÓ

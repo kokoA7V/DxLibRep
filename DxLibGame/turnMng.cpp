@@ -1,5 +1,5 @@
 #include <DxLib.h>
-#include "turnMng.h"
+#include "TurnMng.h"
 #include "CardGene.h"
 #include "KeyMng.h"
 #include "koko.h"
@@ -19,8 +19,7 @@ void TurnMng::Init() {
 void TurnMng::Update(){	
 	
 	// デバック用のpow表示
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "DEBUG:POW %d", pow);
-	
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "DEBUG:POW %d", pow);	
 
 	// パズル表示
 	kokoPl1.Update(100, 80);
@@ -156,7 +155,7 @@ void TurnMng::Update(){
 		if (Key.keyState[KEY_INPUT_SPACE] == 1)
 		{
 			player.hands[player.setHand] = 0;
-			player.HowManyHands();
+			player.nowHands = player.HowManyHands();
 		}
 		
 		NextPhase();
