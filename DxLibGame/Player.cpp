@@ -57,20 +57,19 @@ void Player::HandZeroGo() {
 
 // ŽèŽD‚ð•\Ž¦‚³‚¹‚é
 void Player::DispHands(int posX) {
-	DrawFormatString(400, 400, GetColor(255, 255, 255), "setHands %d", hands[setHand]);
 
 	for (int i = 0; i < nowHands; i++)
 	{
 		// ‘I‘ð‚µ‚Ä‚é‚È‚ç•¶Žš‚ðÔF‚É
 		if (setHand == i)
 		{
-			DrawFormatString(i * 100 + 50 + posX, 500, GetColor(255, 0, 0), "UŒ‚—Í %d", hands[i]);
-			DrawFormatString(i * 100 + 50 + posX, 550, GetColor(255, 0, 0), "”Ô† %d", i);
+			DrawFormatString(i * 100 + 50 + posX, 600, GetColor(255, 0, 0), "UŒ‚—Í %d", hands[i]);
+			DrawFormatString(i * 100 + 50 + posX, 650, GetColor(255, 0, 0), "”Ô† %d", i);
 		}
 		else
 		{
-			DrawFormatString(i * 100 + 50 + posX, 500, GetColor(255, 255, 255), "UŒ‚—Í %d", hands[i]);
-			DrawFormatString(i * 100 + 50 + posX, 550, GetColor(255, 255, 255), "”Ô† %d", i);
+			DrawFormatString(i * 100 + 50 + posX, 600, GetColor(255, 255, 255), "UŒ‚—Í %d", hands[i]);
+			DrawFormatString(i * 100 + 50 + posX, 650, GetColor(255, 255, 255), "”Ô† %d", i);
 		}
 	}
 }

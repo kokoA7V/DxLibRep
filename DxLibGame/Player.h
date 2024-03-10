@@ -4,6 +4,9 @@
 class Player {
 private :
 public :
+
+	int pow = 0;
+
 	int maxHp = 20;
 	int nowHp = 20;
 

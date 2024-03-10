@@ -4,6 +4,8 @@
 #include "KeyMng.h"
 #include "koko.h"
 #include "Player.h"
+#include "CardList.h"
+#include "Decoy.h"
 
 // 追記 by koko
 #include "ResourceMng.h"
@@ -15,15 +17,54 @@ Player player2;
 koko kokoPl1;
 koko kokoPl2;
 
+Decoy decoy;
+
+CardList gCardList;
 
 void TurnMng::Init() {
 	kokoPl1.Init();
 	kokoPl2.Init();
+	
+	//phaseText[0]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), "StartPhase");
+	//phaseText[1]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), " > StartPhase < ");
+	//phaseText[2]= DrawFormatString(phaseDispX, 40, GetColor(255, 255, 255), "AttackPhase");
+	//phaseText[3]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), " > AttackPhase < ");
+	//phaseText[4]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), "DrowPhase");
+	//phaseText[5]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), " > DrowPhase < ");
+	//phaseText[6]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), "LevelUpPhase");
+	//phaseText[7]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), " > LevelUpPhase < ");
+	//phaseText[8]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), "MainPhase");
+	//phaseText[9]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), " > MainPhase < ");
+	//phaseText[10]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), "TrushPhase");
+	//phaseText[11]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), " > TrushPhase < ");
+	//phaseText[12]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), "EndPhase");
+	//phaseText[13]= DrawFormatString(phaseDispX, 10, GetColor(255, 255, 255), " > EndPhase < ");
 }
 void TurnMng::Update(){	
 	
+	// フェイズ表示
+	PhaseDisp();
+
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "%d",player.pow);
+
+
+	
+	if (Key.keyState[KEY_INPUT_SPACE] == 1)
+	{
+		player.pow = decoy.CardEffect(player);
+	}
+	if (Key.keyState[KEY_INPUT_E] == 1)
+	{
+		gCardList.fieldCardList.clear();
+	}
+
+	for (int i = 0; i < gCardList.fieldCardList.size(); i++)
+	{
+		DrawFormatString(500 , 450 - i * 20, GetColor(255, 255, 255), "■");
+	}
+
 	// デバック用のpow表示
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "DEBUG:POW %d", pow);	
+	/*DrawFormatString(0, 0, GetColor(255, 255, 255), "DEBUG:POW %d", pow);*/	
 
 	// パズル表示
 	////
@@ -64,29 +105,24 @@ void TurnMng::Update(){
 		// ハンドを数える
 		player.nowHands = player.HowManyHands();
 		player2.nowHands = player2.HowManyHands();
-		
-		DrawFormatString(400, 10, GetColor(255, 255, 255), "StartPhase : nowHands%d",player.nowHands);
-		DrawFormatString(800, 10, GetColor(255, 255, 255), "nowHP%d", player2.nowHp);
+
 		NextPhase();
 		break;
 		
 	case attack:
 		// バトルフェイズ処理
-		DrawFormatString(400, 10, GetColor(255, 255, 255), "AttackPhase");
 		
 		// 自分の持ってるカードの合計攻撃力分相手にダメージを与える	
 		if (battingfirst)
 		{
 			DrawFormatString(200, 0, GetColor(255, 255, 255), "%d", pow, "ダメージを与えた！！");
-		}
-		
+		}		
 		
 		NextPhase();
 		break;
 		
 	case drow:
 		// ドローフェイズ処理
-		DrawFormatString(400, 10, GetColor(255, 255, 255), "DrowPhase");
 		
 		// カードを五枚になるように引く
 		if (battingfirst) player.Draw();
@@ -126,7 +162,6 @@ void TurnMng::Update(){
 		
 	case trush:
 		// トラッシュフェイズ処理
-		DrawFormatString(400, 10, GetColor(255, 255, 255), "TrushPhase");
 		//手札を捨てる
 
 		// カード選択
@@ -141,7 +176,6 @@ void TurnMng::Update(){
 		NextPhase();
 		break;
 	case end:
-		DrawFormatString(400, 10, GetColor(255, 255, 255), "EndPhase");
 		// ターンエンド処理
 		if (battingfirst)
 		{
@@ -168,7 +202,6 @@ void TurnMng::NextPhase() {
 
 void TurnMng::CardPlayPl1() 
 {
-	DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", player.nowHands);
 
 	// パズルモードと手札選択モード切り替え
 	switch (mode)
@@ -215,7 +248,6 @@ void TurnMng::CardPlayPl1()
 
 void TurnMng::CardPlayPl2()
 {
-	DrawFormatString(50, 400, GetColor(255, 255, 255), "nowHands %d", player2.nowHands);
 
 	// パズルモードと手札選択モード切り替え
 	switch (mode)
@@ -256,6 +288,75 @@ void TurnMng::CardPlayPl2()
 			kokoPl2.isPlayer = false;
 			mode = 0;
 		}
+		break;
+	}
+}
+
+void TurnMng::PhaseDisp() {
+	switch (phaseNo)
+	{
+	case start:
+		DrawFormatString(phaseDispX, phaseDispY , GetColor(255, 255, 255), " > StartPhase < ");
+		DrawFormatString(phaseDispX, phaseDispY + 30, GetColor(255, 255, 255), "   AttackPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 60, GetColor(255, 255, 255), "   DrowPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 90, GetColor(255, 255, 255), "   LevelUpPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 120, GetColor(255, 255, 255), "   MainPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 150, GetColor(255, 255, 255), "   TrushPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 180, GetColor(255, 255, 255), "   EndPhase");
+		break;
+	case attack:
+		DrawFormatString(phaseDispX, phaseDispY , GetColor(255, 255, 255), "   StartPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 30, GetColor(255, 255, 255), " > AttackPhase < ");
+		DrawFormatString(phaseDispX, phaseDispY + 60, GetColor(255, 255, 255), "   DrowPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 90, GetColor(255, 255, 255), "   LevelUpPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 120, GetColor(255, 255, 255), "   MainPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 150, GetColor(255, 255, 255), "   TrushPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 180, GetColor(255, 255, 255), "   EndPhase");
+		break;
+	case drow:
+		DrawFormatString(phaseDispX, phaseDispY , GetColor(255, 255, 255), "   StartPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 30, GetColor(255, 255, 255), "   AttackPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 60, GetColor(255, 255, 255), " > DrowPhase < ");
+		DrawFormatString(phaseDispX, phaseDispY + 90, GetColor(255, 255, 255), "   LevelUpPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 120, GetColor(255, 255, 255), "   MainPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 150, GetColor(255, 255, 255), "   TrushPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 180, GetColor(255, 255, 255), "   EndPhase");
+		break;
+	case levelUp:
+		DrawFormatString(phaseDispX, phaseDispY , GetColor(255, 255, 255), "   StartPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 30, GetColor(255, 255, 255), "   AttackPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 60, GetColor(255, 255, 255), "   DrowPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 90, GetColor(255, 255, 255), " > LevelUpPhase < ");
+		DrawFormatString(phaseDispX, phaseDispY + 120, GetColor(255, 255, 255), "   MainPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 150, GetColor(255, 255, 255), "   TrushPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 180, GetColor(255, 255, 255), "   EndPhase");
+		break;
+	case main:
+		DrawFormatString(phaseDispX, phaseDispY , GetColor(255, 255, 255), "   StartPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 30, GetColor(255, 255, 255), "   AttackPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 60, GetColor(255, 255, 255), "   DrowPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 90, GetColor(255, 255, 255), "   LevelUpPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 120, GetColor(255, 255, 255), " > MainPhase < ");
+		DrawFormatString(phaseDispX, phaseDispY + 150, GetColor(255, 255, 255), "   TrushPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 180, GetColor(255, 255, 255), "   EndPhase");
+		break;
+	case trush:
+		DrawFormatString(phaseDispX, phaseDispY , GetColor(255, 255, 255), "   StartPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 30, GetColor(255, 255, 255), "   AttackPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 60, GetColor(255, 255, 255), "   DrowPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 90, GetColor(255, 255, 255), "   LevelUpPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 120, GetColor(255, 255, 255), "   MainPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 150, GetColor(255, 255, 255), " > TrushPhase < ");
+		DrawFormatString(phaseDispX, phaseDispY + 180, GetColor(255, 255, 255), "   EndPhase");
+		break;
+	case end:
+		DrawFormatString(phaseDispX, phaseDispY , GetColor(255, 255, 255), "   StartPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 30, GetColor(255, 255, 255), "   AttackPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 60, GetColor(255, 255, 255), "   DrowPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 90, GetColor(255, 255, 255), "   LevelUpPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 120, GetColor(255, 255, 255), "   MainPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 150, GetColor(255, 255, 255), "   TrushPhase");
+		DrawFormatString(phaseDispX, phaseDispY + 180, GetColor(255, 255, 255), " > EndPhase < ");
 		break;
 	}
 }

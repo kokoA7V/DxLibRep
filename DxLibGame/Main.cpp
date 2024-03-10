@@ -20,7 +20,7 @@ int sceneNum = 0;
 int spriteHandle;
 int spriteHandle2;
 
-int setBottum = 0;
+int setButton = 0;
 
 // サウンドハンドル
 int soundHandle;
@@ -41,7 +41,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         rm.Init();
 
         sceneNum = 0;
-        setBottum = 0;
+        setButton = 0;
 
         // spriteHandle = LoadGraph("Sprite/test.PNG");
         // spriteHandle2 = LoadGraph("Sprite/test2.PNG");
@@ -113,28 +113,28 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             SetFontSize(30);
             if (Key.keyState[KEY_INPUT_S] == 1)
             {
-                if (setBottum < 2)
+                if (setButton < 2)
                 {
-                    setBottum++;
+                    setButton++;
                 }
                 else
                 {
-                    setBottum = 0;
+                    setButton = 0;
                 }
             }
 
             if (Key.keyState[KEY_INPUT_W] == 1)
             {
-                if (setBottum > 0)
+                if (setButton > 0)
                 {
-                    setBottum--;
+                    setButton--;
                 }
                 else
                 {
-                    setBottum = 2;
+                    setButton = 2;
                 }
             }
-            switch (setBottum)
+            switch (setButton)
             {
             case 0:
                 // スタートセレクト状態

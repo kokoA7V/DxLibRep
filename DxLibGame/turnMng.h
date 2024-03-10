@@ -2,10 +2,17 @@
 #include"DxLib.h"
 #include<List>
 #include<string>
+#include"CardList.h"
 
 class TurnMng {
 private:
 public:
+
+	int phaseDispX = 570;
+	int phaseDispY = 300;
+
+	/*string phaseText[14];*/
+
 	int pow = 0;
 
 	bool battingfirst = true;
@@ -41,4 +48,6 @@ public:
 
 	void CardPlayPl1();
 	void CardPlayPl2();
+
+	void PhaseDisp();
 };
