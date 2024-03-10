@@ -138,9 +138,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             {
             case 0:
                 // スタートセレクト状態
-                DrawFormatString(40, 300, GetColor(255, 0, 0), "START 　　　　げーむはじめるよ");
-                DrawFormatString(40, 330, GetColor(255, 255, 255), "OPTION");
-                DrawFormatString(40, 360, GetColor(255, 255, 255), "EXIT");
+
+                // 表示
+                DrawGraph(100, 300, rm.sellectButton[1], 0);
+                DrawGraph(100, 400, rm.sellectButton[0], 0);
+                DrawGraph(100, 500, rm.sellectButton[0], 0);
+                DrawFormatString(170, 320, GetColor(255, 255, 255), "START 　　　　ゲーム開始");
+                DrawFormatString(170, 420, GetColor(128, 128, 128), "OPTION");
+                DrawFormatString(170, 520, GetColor(128, 128, 128), "EXIT");
+
+                // 変更前
+                //DrawFormatString(40, 300, GetColor(255, 0, 0), "START 　　　　げーむはじめるよ");
+                //DrawFormatString(40, 330, GetColor(255, 255, 255), "OPTION");
+                //DrawFormatString(40, 360, GetColor(255, 255, 255), "EXIT");
+                //
+
                 if (Key.keyState[KEY_INPUT_RETURN] == 1)
                 {
                     sceneNum = 5;
@@ -148,9 +160,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 break;
             case 1:
                 // オプションセレクト状態
-                DrawFormatString(40, 300, GetColor(255, 255, 255), "START");
-                DrawFormatString(40, 330, GetColor(255, 0, 0), "OPTION　　　　おぷしょんひらくよ");
-                DrawFormatString(40, 360, GetColor(255, 255, 255), "EXIT");
+
+                // 表示
+                DrawGraph(100, 300, rm.sellectButton[0], 0);
+                DrawGraph(100, 400, rm.sellectButton[1], 0);
+                DrawGraph(100, 500, rm.sellectButton[0], 0);
+                DrawFormatString(170, 320, GetColor(128, 128, 128), "START");
+                DrawFormatString(170, 420, GetColor(255, 255, 255), "OPTION　　　　設定変更");
+                DrawFormatString(170, 520, GetColor(128, 128, 128), "EXIT");
+
+                // 変更前
+                //DrawFormatString(40, 300, GetColor(255, 255, 255), "START");
+                //DrawFormatString(40, 330, GetColor(255, 0, 0), "OPTION　　　　おぷしょんひらくよ");
+                //DrawFormatString(40, 360, GetColor(255, 255, 255), "EXIT");
+                // 
+
                 if (Key.keyState[KEY_INPUT_RETURN] == 1)
                 {
                     sceneNum = 8;
@@ -158,9 +182,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 break;
             case 2:
                 // イグジット選択状態
-                DrawFormatString(40, 300, GetColor(255, 255, 255), "START");
-                DrawFormatString(40, 330, GetColor(255, 255, 255), "OPTION");
-                DrawFormatString(40, 360, GetColor(255, 0, 0), "EXIT  　　　　げーむをとじるよ");
+                
+                // 表示
+                DrawGraph(100, 300, rm.sellectButton[0], 0);
+                DrawGraph(100, 400, rm.sellectButton[0], 0);
+                DrawGraph(100, 500, rm.sellectButton[1], 0);
+                DrawFormatString(170, 320, GetColor(128, 128, 128), "START");
+                DrawFormatString(170, 420, GetColor(128, 128, 128), "OPTION");
+                DrawFormatString(170, 520, GetColor(255, 255, 255), "EXIT  　　　　ゲーム終了");
+
+                // 変更前
+                //DrawFormatString(40, 300, GetColor(255, 255, 255), "START");
+                //DrawFormatString(40, 330, GetColor(255, 255, 255), "OPTION");
+                //DrawFormatString(40, 360, GetColor(255, 0, 0), "EXIT  　　　　げーむをとじるよ");
+                //
+
                 if (Key.keyState[KEY_INPUT_RETURN] == 1)
                 {
                     DxLib_End();

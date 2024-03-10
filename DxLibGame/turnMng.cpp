@@ -5,12 +5,16 @@
 #include "koko.h"
 #include "Player.h"
 
+// 追記 by koko
+#include "ResourceMng.h"
+
 TurnMng::TurnMng(){}
 
 Player player;
 Player player2;
 koko kokoPl1;
 koko kokoPl2;
+
 
 void TurnMng::Init() {
 	kokoPl1.Init();
@@ -22,15 +26,32 @@ void TurnMng::Update(){
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "DEBUG:POW %d", pow);	
 
 	// パズル表示
-	kokoPl1.Update(100, 80);
-	kokoPl2.Update(800, 80);
+	////
+	// 位置変更 by koko
+	kokoPl1.Update(130, 250);
+	kokoPl2.Update(830, 250);
+	// 元位置
+	//kokoPl1.Update(100, 80);
+	//kokoPl2.Update(800, 80);
+	////
+
+	// お試しHP枠表記追加 by koko
+	DrawGraph(20, 120, rm.stats[0], 0);
+	DrawGraph(1180, 120, rm.stats[0], 0);
 
 	// 手札表示
 	player.DispHands(0);
 	player2.DispHands(700);
 
-	player.HPDisp(0);
-	player2.HPDisp(200);
+	////
+	// 表記変更 by koko
+	player.HPDisp(60);
+	player2.HPDisp(1220);
+	// 変更前
+	//player.HPDisp(0);
+	//player2.HPDisp(200);
+	////
+
 	switch (phaseNo)
 	{
 	case start:

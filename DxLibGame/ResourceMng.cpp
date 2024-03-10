@@ -7,6 +7,14 @@ void ResourceMng::Init()
 {
     backGround = LoadGraph("Sprite/BackGround.PNG");
 
+    sellectButton[0] = LoadGraph("Sprite/SellectButton0.PNG");
+    sellectButton[1] = LoadGraph("Sprite/SellectButton1.PNG");
+
+    stats[0] = LoadGraph("Sprite/Stats_Under.PNG");
+    stats[1] = LoadGraph("Sprite/Stats_FW.PNG");
+    stats[2] = LoadGraph("Sprite/Stats_SP.PNG");
+    stats[3] = LoadGraph("Sprite/Stats_Time.PNG");
+
     // ƒpƒYƒ‹—p‰æ‘œ
     boxHandle[0] = LoadGraph("Sprite/box0.PNG");
     boxHandle[1] = LoadGraph("Sprite/box1.PNG");

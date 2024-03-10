@@ -2,15 +2,27 @@
 #include "KeyMng.h"
 #include "CardGene.h"
 
+// 追記 by koko
+#include "ResourceMng.h"
+
 void Player::Update() {
 
 }
 
 void Player::HPDisp(int posX) {
-	for ( int i=0; i < nowHp; i++)
+
+	////
+	// 表示変更 by koko
+	for (int i = 0; i < nowHp; i++)
 	{
-		DrawFormatString(500 + posX, 450 - i * 20, GetColor(255, 255, 255), "■");
+		DrawGraph(posX, 500 - i * 20, rm.stats[1], 0);
 	}
+	// 元コード
+	//for ( int i=0; i < nowHp; i++)
+	//{
+	//	DrawFormatString(500 + posX, 450 - i * 20, GetColor(255, 255, 255), "■");
+	//}
+	////
 }
 
 // 手札の数を数えるメソッド
